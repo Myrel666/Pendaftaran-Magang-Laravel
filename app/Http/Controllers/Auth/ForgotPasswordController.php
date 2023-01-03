@@ -50,7 +50,7 @@ class ForgotPasswordController extends Controller
       }
 
       /**
-       * Write code on Method
+       * Show reset password form
        *
        * @return response()
        */
@@ -59,7 +59,7 @@ class ForgotPasswordController extends Controller
      }
  
      /**
-      * Write code on Method
+      * Reset Password 
       *
       * @return response()
       */

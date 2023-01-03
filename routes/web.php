@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GuestController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Guest
+Route::get('/', [GuestController::class, 'index'])->name('guest.index');
+// Pendaftaran
+Route::get('daftar/durasi-magang/{user}', [GuestController::class, 'durasiPendaftaran'])->name('guest.pendaftaran.durasi');
+Route::get('daftar/divisi-magang/{user}', [GuestController::class, 'divisiPendaftaran'])->name('guest.pendaftaran.divisi');
+Route::get('daftar/divisi/{divisi}/{user}', [GuestController::class, 'pendaftaran'])->name('guest.pendaftaran');
+
 
 // Authentication
 Route::get('login', [LoginController::class, 'index'])->name('login');
