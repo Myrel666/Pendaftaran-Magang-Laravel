@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GuestController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,10 @@ Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('login/auth', [LoginController::class, 'authenticate'])->name('auth');
 Route::get('home', [HomeController::class, 'index'])->name('home');
+
+// Administrator
+Route::get('admin/durasi', [AdminController::class, 'durasi'])->name('admin.durasi');
+
 
 // Forgot Password
 Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');

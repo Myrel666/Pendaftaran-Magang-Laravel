@@ -101,7 +101,7 @@
             <a href="pages/widgets.html" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Data Master
+                Data Pemagang
               </p>
             </a>
           </li>
@@ -109,7 +109,16 @@
             <a href="pages/widgets.html" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Data Master
+                Data Divisi
+              </p>
+            </a>
+          </li>
+          <li class="nav-header">Rekapan Pemagang</li>
+          <li class="nav-item">
+            <a href="pages/widgets.html" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Pengajuan
               </p>
             </a>
           </li>
@@ -117,24 +126,16 @@
             <a href="pages/widgets.html" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Data Master
+                Presensi
               </p>
             </a>
           </li>
-          <li class="nav-header">Rekap Kegiatan</li>
+          <li class="nav-header">Pendaftaran Magang</li>
           <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
+            <a href="{{ route('admin.durasi') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Data Master
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Data Master
+                Pengaturan Durasi
               </p>
             </a>
           </li>
@@ -142,24 +143,7 @@
             <a href="pages/widgets.html" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Data Master
-              </p>
-            </a>
-          </li>
-          <li class="nav-header">Penilaian</li>
-          <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Data Master
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Data Master
+                Pendaftar
               </p>
             </a>
           </li>
@@ -176,8 +160,7 @@
 
   <!-- /.content-wrapper -->
 <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
+    <strong>Copyright &copy; 2023 All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.2.0
     </div>
