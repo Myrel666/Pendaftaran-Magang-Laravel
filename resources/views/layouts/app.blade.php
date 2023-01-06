@@ -26,6 +26,9 @@
   <link rel="stylesheet" href="{{asset('AdminLTE')}}/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="{{asset('AdminLTE')}}/plugins/summernote/summernote-bs4.min.css">
+  
+  {{-- custom --}}
+  <link rel="stylesheet" href="{{asset('AdminLTE')}}/dist/css/custom.css">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -77,7 +80,7 @@
           <img src="{{asset('AdminLTE')}}/dist/img/profile.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">Alexandre</a>
         </div>
       </div>
 
@@ -99,7 +102,7 @@
           <li class="nav-header">Data Master</li>         
           <li class="nav-item">
             <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fa fa-users"></i>
               <p>
                 Data Pemagang
               </p>
@@ -107,7 +110,7 @@
           </li>
           <li class="nav-item">
             <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-sitemap"></i>
               <p>
                 Data Divisi
               </p>
@@ -116,7 +119,7 @@
           <li class="nav-header">Rekapan Pemagang</li>
           <li class="nav-item">
             <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-edit"></i>
               <p>
                 Pengajuan
               </p>
@@ -124,7 +127,7 @@
           </li>
           <li class="nav-item">
             <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-calendar-check"></i>
               <p>
                 Presensi
               </p>
@@ -133,7 +136,7 @@
           <li class="nav-header">Pendaftaran Magang</li>
           <li class="nav-item">
             <a href="{{ route('admin.durasi') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-cogs"></i>
               <p>
                 Pengaturan Durasi
               </p>
@@ -141,7 +144,7 @@
           </li>
           <li class="nav-item">
             <a href="pages/widgets.html" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-user-plus"></i>
               <p>
                 Pendaftar
               </p>
