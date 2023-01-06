@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="{{ asset('AdminLTE') }}/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('AdminLTE') }}/dist/css/adminlte.min.css">
+  @stack('css')
 </head>
 
 <!-- content -->
@@ -25,5 +26,7 @@
 <script src="{{ asset('AdminLTE') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('AdminLTE') }}/dist/js/adminlte.min.js"></script>
+<!-- js blade -->
+@stack('js')
 </body>
 </html>
