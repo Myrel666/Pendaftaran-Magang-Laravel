@@ -34,6 +34,10 @@ Route::get('home', [HomeController::class, 'index'])->name('home');
 
 // Administrator
 Route::get('admin/durasi', [AdminController::class, 'durasi'])->name('admin.durasi');
+Route::get('admin/datapemagang', [AdminController::class, 'datapemagang'])->name('admin.datapemagang');
+Route::get('admin/datadivisi', [AdminController::class, 'datadivisi'])->name('admin.datadivisi');
+
+// Pemagang
 
 
 // Forgot Password
