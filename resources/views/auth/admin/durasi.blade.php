@@ -107,7 +107,7 @@ input:checked+.slider:before {
 
                             </div>
                             <a class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#addModal">
-                                Tambah Durasi
+                                <i class="bi bi-plus-lg"></i> Tambah Durasi
                             </a>
                             <table id="durasiTabel" class="table table-bordered table-striped">
                                 <thead class="text-center">
@@ -119,24 +119,35 @@ input:checked+.slider:before {
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
+                                    @isset($durasi)
                                     @foreach($durasi as $waktu)
                                     <tr>
                                         <td width="5%">{{ $loop->iteration }}</td>
-                                        <td>{{ $waktu->waktu_durasi }}</td>
+                                        <td class="text-capitalize">{{ $waktu->waktu_durasi }}</td>
                                         <td width="15%">
                                             <div class="switch">
                                                 <div class="toggle-1-bulan"></div>
                                                 <label class="switch">
-                                                    <input type="checkbox" id="checkbox" onclick="setStatusDurasi({{ $waktu->id }})" {{ $waktu->status == 1 ? 'checked' : '' }}>
+                                                    <input type="checkbox" id="checkbox"
+                                                        onclick="setStatusDurasi({{ $waktu->id }})"
+                                                        {{ $waktu->status == 1 ? 'checked' : '' }}>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                         </td>
                                         <td width="5%">
-                                            <a href="{{ route('admin.durasi.delete', $waktu->id) }}" class="text-decoration-none text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus ini?')"><i class="bi bi-trash3"></i></a>
+                                            <a href="{{ route('admin.durasi.delete', $waktu->id) }}"
+                                                class="text-decoration-none text-danger"
+                                                onclick="return confirm('Apakah anda yakin ingin menghapus ini?')"><i
+                                                    class="bi bi-trash3"></i></a>
                                         </td>
                                     </tr>
                                     @endforeach
+                                    @endisset
+
+                                    @if($durasi->isEmpty())
+                                    <td colspan="4">Data tidak ada.</td>
+                                    @endif
                             </table>
                         </div>
                         <!-- /.card-body -->

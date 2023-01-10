@@ -40,8 +40,12 @@ Route::post('admin/durasi/add', [AdminController::class, 'addDurasi'])->name('ad
 Route::put('admin/durasi/updateStatus', [AdminController::class, 'updateStatusDurasi'])->name('admin.durasi.updateStatus');
 Route::get('admin/durasi/delete/{durasi}', [AdminController::class, 'deleteDurasi'])->name('admin.durasi.delete');
 
-Route::get('admin/data-pemagang', [AdminController::class, 'datapemagang'])->name('admin.dataPemagang');
-Route::get('admin/data-divisi', [AdminController::class, 'datadivisi'])->name('admin.dataDivisi');
+// Divisi
+Route::get('admin/divisi', [AdminController::class, 'divisi'])->name('admin.divisi');
+Route::post('admin/divisi/add', [AdminController::class, 'addDivisi'])->name('admin.divisi.add');
+Route::get('admin/divisi/delete/{divisi}', [AdminController::class, 'deleteDivisi'])->name('admin.divisi.delete');
+
+Route::get('admin/pemagang', [AdminController::class, 'pemagang'])->name('admin.pemagang');
 
 // Pemagang
 

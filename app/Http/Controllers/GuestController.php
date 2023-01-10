@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Divisi;
 use App\Models\Durasi;
 use Illuminate\Http\Request;
 
@@ -32,7 +33,8 @@ class GuestController extends Controller
      */
     public function divisiPendaftaran($user, $durasi)
     {
-        return view('pendaftaran_divisi', compact('user', 'durasi'));
+        $divisi = Divisi::orderBy('nama_divisi')->get();
+        return view('pendaftaran_divisi', compact('user', 'durasi', 'divisi'));
     }
 
     /**

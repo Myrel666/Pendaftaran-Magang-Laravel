@@ -104,7 +104,7 @@
           </li>
           <li class="nav-header">Data Master</li>         
           <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
+            <a href="{{ route('admin.pemagang') }}" class="nav-link">
               <i class="nav-icon fa fa-users"></i>
               <p>
                 Data Pemagang
@@ -112,7 +112,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/widgets.html" class="nav-link">
+            <a href="{{ route('admin.divisi') }}" class="nav-link">
               <i class="nav-icon fas fa-sitemap"></i>
               <p>
                 Data Divisi
