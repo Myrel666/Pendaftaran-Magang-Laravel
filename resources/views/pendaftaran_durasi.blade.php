@@ -12,26 +12,24 @@
                     <div class="container">
 
                         <div class="row justify-content-center">
-    
-                            <div class="col-md-2 me-md-5 mb-4 opacity-50 border border-primary rounded text-center pt-3">
+                            @foreach($durasi as $waktu)
+                            @php
+                            $time = explode(' ', $waktu->waktu_durasi)[0];
+                            @endphp
+                            <div
+                                class="col-md-2 me-md-5 mb-4 {{ $waktu->status == 0 ? 'opacity-50' : '' }} border border-primary rounded text-center pt-3 shadow-md">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <p class="fw-bold fs-5">1 Bulan</p>
+                                    <p class="fw-bold fs-5">{{ $waktu->waktu_durasi }}</p>
+                                    @if($waktu->status == 1)
+                                    <a href="{{ route('guest.pendaftaran.divisi', [$user, $time]) }}" class="text-dark">
+                                        <p class="fs-6"> Dibuka <i class="bi bi-chevron-right text-primary"></i></p>
+                                    </a>
+                                    @else
                                     <p class="fs-6">Ditutup</p>
+                                    @endif
                                 </div>
                             </div>
-                            <div class="col-md-2 me-md-5 mb-4 border border-primary rounded text-center pt-3 shadow-md">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <p class="fw-bold fs-5">3 Bulan</p>
-                                    <a href="{{ route('guest.pendaftaran.divisi', $user) }}" class="text-dark"><p class="fs-6"> Dibuka <i class="bi bi-chevron-right text-primary"></i></p></a>
-                                </div>
-                            </div>
-                            <div class="col-md-2 me-md-5 mb-4 opacity-50 border border-primary rounded text-center pt-3">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <p class="fw-bold fs-5">6 Bulan</p>
-                                    <p class="fs-6">Ditutup</p>
-                                </div>
-                            </div>
-                            
+                            @endforeach
                         </div>
                     </div>
                 </div>

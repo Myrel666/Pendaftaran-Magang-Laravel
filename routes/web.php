@@ -20,10 +20,11 @@ use Illuminate\Support\Facades\Route;
 
 // Guest
 Route::get('/', [GuestController::class, 'index'])->name('guest.index');
+
 // Pendaftaran
 Route::get('daftar/durasi-magang/{user}', [GuestController::class, 'durasiPendaftaran'])->name('guest.pendaftaran.durasi');
-Route::get('daftar/divisi-magang/{user}', [GuestController::class, 'divisiPendaftaran'])->name('guest.pendaftaran.divisi');
-Route::get('daftar/divisi/{divisi}/{user}', [GuestController::class, 'pendaftaran'])->name('guest.pendaftaran');
+Route::get('daftar/divisi/{user}/{durasi}', [GuestController::class, 'divisiPendaftaran'])->name('guest.pendaftaran.divisi');
+Route::get('daftar/{user}/{durasi}/{divisi}', [GuestController::class, 'pendaftaran'])->name('guest.pendaftaran');
 
 
 // Authentication
@@ -33,9 +34,14 @@ Route::post('login/auth', [LoginController::class, 'authenticate'])->name('auth'
 Route::get('home', [HomeController::class, 'index'])->name('home');
 
 // Administrator
+// Durasi
 Route::get('admin/durasi', [AdminController::class, 'durasi'])->name('admin.durasi');
-Route::get('admin/datapemagang', [AdminController::class, 'datapemagang'])->name('admin.datapemagang');
-Route::get('admin/datadivisi', [AdminController::class, 'datadivisi'])->name('admin.datadivisi');
+Route::post('admin/durasi/add', [AdminController::class, 'addDurasi'])->name('admin.durasi.add');
+Route::put('admin/durasi/updateStatus', [AdminController::class, 'updateStatusDurasi'])->name('admin.durasi.updateStatus');
+Route::get('admin/durasi/delete/{durasi}', [AdminController::class, 'deleteDurasi'])->name('admin.durasi.delete');
+
+Route::get('admin/data-pemagang', [AdminController::class, 'datapemagang'])->name('admin.dataPemagang');
+Route::get('admin/data-divisi', [AdminController::class, 'datadivisi'])->name('admin.dataDivisi');
 
 // Pemagang
 

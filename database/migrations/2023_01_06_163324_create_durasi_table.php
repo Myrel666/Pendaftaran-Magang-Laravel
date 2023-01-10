@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('waktu_durasi');
             $table->enum('status', [0,1]);
-            $table->timestamps();
+            $table->timestamps();   
         });
     }
 

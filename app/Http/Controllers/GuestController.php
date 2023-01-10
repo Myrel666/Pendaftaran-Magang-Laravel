@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Durasi;
 use Illuminate\Http\Request;
 
 class GuestController extends Controller
@@ -21,24 +22,25 @@ class GuestController extends Controller
      */
     public function durasiPendaftaran($user)
     {
-        return view('pendaftaran_durasi', compact('user'));
+        $durasi = Durasi::orderBy("waktu_durasi")->get();
+        return view('pendaftaran_durasi', compact('user','durasi'));
     }
 
     /**
      * Show pendaftaran menu divisi magang
      * 
      */
-    public function divisiPendaftaran($user)
+    public function divisiPendaftaran($user, $durasi)
     {
-        return view('pendaftaran_divisi', compact('user'));
+        return view('pendaftaran_divisi', compact('user', 'durasi'));
     }
 
     /**
      * Show pendaftaran formulir
      * 
      */
-    public function pendaftaran($divisi, $user)
+    public function pendaftaran($divisi, $user, $durasi)
     {   
-        return view('pendaftaran', compact('user','divisi'));
+        return view('pendaftaran', compact('user','divisi', 'durasi'));
     }
 }

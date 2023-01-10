@@ -19,7 +19,7 @@
                             <div class="col-md-12 mb-4 border border-primary rounded pt-3 px-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="fw-bold fs-5 w-75">Divisi Sumber Daya Manusia (SDM)</p>
-                                    <a href="{{ route('guest.pendaftaran', ['divisi-sumber-daya-manusia', $user]) }}" class="text-dark">
+                                    <a href="{{ route('guest.pendaftaran', ['divisi-sumber-daya-manusia', $user, $durasi]) }}" class="text-dark">
                                         <p class="fs-6"> Daftar <i class="bi bi-chevron-right text-primary"></i></p>
                                     </a>
                                 </div>
@@ -27,7 +27,7 @@
                             <div class="col-md-12 mb-4 border border-primary rounded pt-3 px-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="fw-bold fs-5 w-75">Divisi Komersial</p>
-                                    <a href="{{ route('guest.pendaftaran', ['divisi-komersial', $user]) }}" class="text-dark">
+                                    <a href="{{ route('guest.pendaftaran', ['divisi-komersial', $user, $durasi]) }}" class="text-dark">
                                         <p class="fs-6"> Daftar <i class="bi bi-chevron-right text-primary"></i></p>
                                     </a>
                                 </div>

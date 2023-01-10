@@ -103,28 +103,40 @@ input:checked+.slider:before {
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
+                            <div class="d-flex">
+
+                            </div>
+                            <a class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#addModal">
+                                Tambah Durasi
+                            </a>
                             <table id="durasiTabel" class="table table-bordered table-striped">
                                 <thead class="text-center">
                                     <tr>
                                         <th>No.</th>
                                         <th>Durasi</th>
                                         <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
+                                    @foreach($durasi as $waktu)
                                     <tr>
-                                        <td width="5%">1</td>
-                                        <td>3 Bulan</td>
+                                        <td width="5%">{{ $loop->iteration }}</td>
+                                        <td>{{ $waktu->waktu_durasi }}</td>
                                         <td width="15%">
                                             <div class="switch">
                                                 <div class="toggle-1-bulan"></div>
                                                 <label class="switch">
-                                                    <input type="checkbox">
+                                                    <input type="checkbox" id="checkbox" onclick="setStatusDurasi({{ $waktu->id }})" {{ $waktu->status == 1 ? 'checked' : '' }}>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                         </td>
+                                        <td width="5%">
+                                            <a href="{{ route('admin.durasi.delete', $waktu->id) }}" class="text-decoration-none text-danger" onclick="return confirm('Apakah anda yakin ingin menghapus ini?')"><i class="bi bi-trash3"></i></a>
+                                        </td>
                                     </tr>
+                                    @endforeach
                             </table>
                         </div>
                         <!-- /.card-body -->
@@ -138,17 +150,75 @@ input:checked+.slider:before {
         <!-- /.container-fluid -->
     </section>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Tambah Durasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('admin.durasi.add') }}" method="post">
+                <div class="modal-body">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="waktu" class="form-label">Waktu Magang</label>
+                        <input type="text" class="form-control" id="waktu" placeholder="3 Bulan" name="waktu">
+                        @error('waktu')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
 @push('js')
 <script>
-$(function() {
-        $("input[data-bootstrap-switch]").each(function() {
-            $(this).bootstrapSwitch('state', $(this).prop('checked'));
-        });
-        ///////////////////Before Below Datatable Initilization///////////////////////////
-
-        $("#durasiTabel").DataTable();
-    )
-};
+function setStatusDurasi(id) {
+    var cek = $('#checkbox').is(":checked");
+    if (cek) {
+        fetch("{{ route('admin.durasi.updateStatus') }}", {
+                method: 'PUT', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': "{{ csrf_token() }}",
+                },
+                body: JSON.stringify({
+                    id,
+                    status: '1'
+                }),
+            })
+            .then((response) => response.json())
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    } else {
+        fetch("{{ route('admin.durasi.updateStatus') }}", {
+                method: 'PUT', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': "{{ csrf_token() }}",
+                },
+                body: JSON.stringify({
+                    id,
+                    status: '0'
+                }),
+            })
+            .then((response) => response.json())
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+}
 </script>
 @endpush
