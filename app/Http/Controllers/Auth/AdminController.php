@@ -111,4 +111,14 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
+
+    /**
+     * Show pemagang page
+     * 
+     * @return view
+     */
+    public function pemagang()
+    {
+        return view('auth.admin.pemagang');
+    }
 }
