@@ -124,7 +124,7 @@ input:checked+.slider:before {
                                     <button type="submit" class="btn btn-outline-primary btn-sm">Tampilkan</button>
                                 </form>
                             </div>
-                            <table id="durasiTabel" class="table table-bordered table-striped table-responsive">
+                            <table id="durasiTabel" class="table table-bordered table-striped table-responsive-md">
                                 <thead class="text-center">
                                     <tr>
                                         <th>No.</th>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('divisi_id')->constrained('divisi')->onUpdate('cascade')->onDelete('cascade'); 
             $table->foreignId('durasi_id')->constrained('durasi')->onUpdate('cascade')->onDelete('cascade'); 
             $table->string('nama');
-            $table->integer('nomor_telepon');
+            $table->string('nomor_telepon');
             $table->string('email');
             $table->string('asal_sekolah');
             $table->string('jurusan');

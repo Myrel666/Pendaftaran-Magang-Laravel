@@ -48,9 +48,12 @@ Route::get('admin/divisi/show/{id}', [AdminController::class, 'showDivisi'])->na
 Route::post('admin/divisi/add', [AdminController::class, 'addDivisi'])->name('admin.divisi.add');
 Route::get('admin/divisi/delete/{divisi}', [AdminController::class, 'deleteDivisi'])->name('admin.divisi.delete');
 
-Route::get('admin/pemagang', [AdminController::class, 'pemagang'])->name('admin.pemagang');
 
 // Pemagang
+Route::get('admin/pemagang', [AdminController::class, 'pemagang'])->name('admin.pemagang');
+Route::get('admin/pemagang/show/{id}', [AdminController::class, 'showPemagang'])->name('admin.pemagang.show');
+Route::post('admin/pemagang/add', [AdminController::class, 'addOrUpdatePemagang'])->name('admin.pemagang.add');
+Route::get('admin/pemagang/delete/{id}', [AdminController::class, 'deletePemagang'])->name('admin.pemagang.delete');
 
 
 // Forgot Password

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\auth;
 
+use App\Models\User;
+use App\Models\Siswa;
 use App\Models\Divisi;
 use App\Models\Durasi;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
@@ -188,6 +191,79 @@ class AdminController extends Controller
      */
     public function pemagang()
     {
-        return view('auth.admin.pemagang');
+        $users = User::where('role_id', 2)->get();
+        return view('auth.admin.pemagang', compact('users'));
+    }
+
+    /**
+     * Show pemagang detail
+     * 
+     * @return json
+     */
+    public function showPemagang($id)
+    {
+        $data = User::find($id);
+        return response()->json($data);
+    }
+
+    /**
+     * Store data with updated
+     * 
+     * @return view
+     */
+    public function addOrUpdatePemagang(Request $request)
+    {
+        if($request->has('editEmail')){
+            $validator['editEmail'] = 'required';
+        }else{
+            $validator['email'] = 'required|unique:users,email';
+        }
+
+        $request->validate($validator, [
+            'required' => ':attribute harus diisi.',
+            'unique' => 'email sudah ada.'
+        ]);
+
+        $data = [
+            'email' => $request->has('id') ? $request->editEmail : $request->email,
+            'role_id' => 2,
+            'password' => bcrypt('rahasiabro'),
+        ];
+
+        if(!$request->has('id')){
+            if($request->pendidikan == 'siswa'){
+                $emailCek = Siswa::where('email', $request->email)->first();
+                $data['siswa_id'] = $emailCek->id ?? NULL;
+            }else{
+                $emailCek = Mahasiswa::where('email', $request->email)->first();
+                $data['mahasiswa_id'] = $emailCek->id ?? NULL;
+            }
+            
+            if($emailCek == null){
+                return redirect()->back()->withErrors(['msg' => 'Email Belum Terdaftar!']);
+            }
+
+            $data['name'] = $emailCek->nama ?? '';
+        }else{
+            $data['name'] = $request->nama;
+        }
+        
+        User::updateOrCreate([
+            'id' => $request->has('id') ? $request->id : ''
+        ],$data);
+
+        return redirect()->back()->with('msg', 'Data Pemagang Berhasil Ditambahkan!');
+    }
+
+    /**
+     * Delete Pemagang
+     * 
+     * @return view
+     */
+    public function deletePemagang($id)
+    {
+        User::find($id)->delete();
+
+        return redirect()->back();
     }
 }

@@ -36,7 +36,7 @@
                             <a class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#addModal">
                                 <i class="bi bi-plus-lg"></i> Tambah Divisi
                             </a>
-                            <table id="durasiTabel" class="table table-bordered table-striped table-responsive">
+                            <table id="durasiTabel" class="table table-bordered table-striped table-responsive-md">
                                 <thead class="text-center">
                                     <tr>
                                         <th>No.</th>
