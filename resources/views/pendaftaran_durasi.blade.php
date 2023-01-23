@@ -13,15 +13,12 @@
 
                         <div class="row justify-content-center">
                             @foreach($durasi as $waktu)
-                            @php
-                            $time = explode(' ', $waktu->waktu_durasi)[0];
-                            @endphp
                             <div
                                 class="col-md-2 me-md-5 mb-4 {{ $waktu->status == 0 ? 'opacity-50' : '' }} border border-primary rounded text-center pt-3 shadow-md">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="fw-bold fs-5 text-capitalize">{{ $waktu->waktu_durasi }}</p>
                                     @if($waktu->status == 1)
-                                    <a href="{{ route('guest.pendaftaran.divisi', [$user, $time]) }}" class="text-dark">
+                                    <a href="{{ route('guest.pendaftaran.divisi', [$user, $waktu->id]) }}" class="text-dark">
                                         <p class="fs-6"> Dibuka <i class="bi bi-chevron-right text-primary"></i></p>
                                     </a>
                                     @else

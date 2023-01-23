@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pendaftaran', function (Blueprint $table) {
+        Schema::create('mahasiswa', function (Blueprint $table) {
             $table->id();
             $table->foreignId('divisi_id')->constrained('divisi')->onUpdate('cascade')->onDelete('cascade'); 
             $table->foreignId('durasi_id')->constrained('durasi')->onUpdate('cascade')->onDelete('cascade'); 
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pendaftaran');
+        Schema::dropIfExists('mahasiswa');
     }
 };

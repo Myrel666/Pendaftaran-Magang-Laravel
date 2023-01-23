@@ -17,11 +17,10 @@
                                 </form>
                             </div>
                             @foreach($divisi as $dvs)
-                            @php $divisiParam = Str::slug("divisi $dvs->nama_divisi", '-')  @endphp
                             <div class="col-md-12 mb-4 border border-primary rounded pt-3 px-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <p class="fw-bold fs-5 w-75 text-capitalize">divisi {{ $dvs->nama_divisi }}</p>
-                                    <a href="{{ route('guest.pendaftaran', [$divisiParam, $user, $durasi]) }}" class="text-dark">
+                                    <a href="{{ route('guest.pendaftaran', [$dvs->id, $user, $durasi]) }}" class="text-dark">
                                         <p class="fs-6"> Daftar <i class="bi bi-chevron-right text-primary"></i></p>
                                     </a>
                                 </div>

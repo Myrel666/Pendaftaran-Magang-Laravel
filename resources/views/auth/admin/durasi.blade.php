@@ -103,17 +103,34 @@ input:checked+.slider:before {
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <div class="d-flex">
-
+                            <div class="d-flex justify-content-between">
+                                <a class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#addModal">
+                                    <i class="bi bi-plus-lg"></i> Tambah Durasi
+                                </a>
+                                <form action="{{ route('admin.durasi') }}" method="get" class="w-25">
+                                    <select class="custom-select rounded-0 w-50 mr-2" id="exampleSelectBorder"
+                                        name="pendidikan">
+                                        @if(!$durasi->isEmpty())
+                                        <option value="siswa" {{ $durasi[0]->pendidikan == 'siswa' ? 'selected' : '' }}>
+                                            Siswa</option>
+                                        <option value="mahasiswa"
+                                            {{ $durasi[0]->pendidikan == 'mahasiswa' ? 'selected' : '' }}>Mahasiswa
+                                        </option>
+                                        @else
+                                        <option value="siswa">Siswa</option>
+                                        <option value="mahasiswa">Mahasiswa</option>
+                                        @endif
+                                    </select>
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">Tampilkan</button>
+                                </form>
                             </div>
-                            <a class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#addModal">
-                                <i class="bi bi-plus-lg"></i> Tambah Durasi
-                            </a>
-                            <table id="durasiTabel" class="table table-bordered table-striped">
+                            <table id="durasiTabel" class="table table-bordered table-striped table-responsive">
                                 <thead class="text-center">
                                     <tr>
                                         <th>No.</th>
                                         <th>Durasi</th>
+                                        <th>Limit</th>
+                                        <th>Pendidikan</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -124,29 +141,37 @@ input:checked+.slider:before {
                                     <tr>
                                         <td width="5%">{{ $loop->iteration }}</td>
                                         <td class="text-capitalize">{{ $waktu->waktu_durasi }}</td>
+                                        <td class="text-capitalize">{{ $waktu->limit }} orang</td>
+                                        <td class="text-capitalize">{{ $waktu->pendidikan }}</td>
                                         <td width="15%">
                                             <div class="switch">
                                                 <div class="toggle-1-bulan"></div>
                                                 <label class="switch">
-                                                    <input type="checkbox" id="checkbox"
-                                                        onclick="setStatusDurasi({{ $waktu->id }})"
-                                                        {{ $waktu->status == 1 ? 'checked' : '' }}>
+                                                    <input type="checkbox" id="checkbox{{ $waktu->id }}"
+                                                        onchange="setStatusDurasi({{ $waktu->id }})" {{ $waktu->status == 1 ? 'checked' : '' }}
+                                                        >
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                         </td>
-                                        <td width="5%">
+                                        <td width="10%">
+                                            <a href="javascript:void(0)" class="text-decoration-none text-warning"
+                                                data-toggle="modal" data-target="#editModal"
+                                                onclick="showDurasi({{ $waktu->id }})">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
                                             <a href="{{ route('admin.durasi.delete', $waktu->id) }}"
                                                 class="text-decoration-none text-danger"
-                                                onclick="return confirm('Apakah anda yakin ingin menghapus ini?')"><i
-                                                    class="bi bi-trash3"></i></a>
+                                                onclick="return confirm('Apakah anda yakin ingin menghapus ini?')">
+                                                <i class="bi bi-trash3"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                     @endforeach
                                     @endisset
 
                                     @if($durasi->isEmpty())
-                                    <td colspan="4">Data tidak ada.</td>
+                                    <td colspan="6">Data tidak ada.</td>
                                     @endif
                             </table>
                         </div>
@@ -162,7 +187,7 @@ input:checked+.slider:before {
     </section>
 </div>
 
-<!-- Modal -->
+<!-- Add Modal -->
 <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -176,10 +201,62 @@ input:checked+.slider:before {
             <form action="{{ route('admin.durasi.add') }}" method="post">
                 <div class="modal-body">
                     @csrf
-                    <div class="mb-3">
+                    <div class="form-group">
                         <label for="waktu" class="form-label">Waktu Magang</label>
-                        <input type="text" class="form-control" id="waktu" placeholder="3 Bulan" name="waktu">
+                        <input type="text" class="form-control" placeholder="3 Bulan" name="waktu"
+                            autocomplete="off">
                         @error('waktu')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label>Pendidikan</label>
+                        <select class="form-control" name="pendidikan">
+                            <option value="siswa">Siswa</option>
+                            <option value="mahasiswa">Mahasiswa</option>
+                        </select>
+                        @error('pendidikan')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="limit" class="form-label">Set Limit Pendaftar</label>
+                        <input type="number" class="form-control" placeholder="30" name="limit" min="1">
+                        @error('limit')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Edit Durasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('admin.durasi.add') }}" method="post">
+                <div class="modal-body">
+                    @csrf
+                    <input type="hidden" id="pendidikan" value="" name="pendidikan">
+                    <input type="hidden" id="status" value="" name="status">
+                    <input type="hidden" class="form-control" id="waktu" name="waktu" value="">
+                    <div class="form-group">
+                        <label for="limit" class="form-label">Set Limit Pendaftar</label>
+                        <input type="number" class="form-control" id="limit" placeholder="30" name="limit" min="1" value="">
+                        @error('limit')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
@@ -196,7 +273,7 @@ input:checked+.slider:before {
 @push('js')
 <script>
 function setStatusDurasi(id) {
-    var cek = $('#checkbox').is(":checked");
+    var cek = $('#checkbox'+id).is(":checked");
     if (cek) {
         fetch("{{ route('admin.durasi.updateStatus') }}", {
                 method: 'PUT', // or 'PUT'
@@ -230,6 +307,17 @@ function setStatusDurasi(id) {
                 console.error('Error:', error);
             });
     }
+}
+
+function showDurasi(id) {
+    fetch("durasi/show/" + id)
+        .then((response) => response.json())
+        .then(data => {
+            document.getElementById('waktu').value = data.waktu_durasi;
+            document.getElementById('limit').value = data.limit;
+            document.getElementById('pendidikan').value = data.pendidikan;
+            document.getElementById('status').value = data.status;
+        });
 }
 </script>
 @endpush

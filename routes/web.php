@@ -24,24 +24,27 @@ Route::get('/', [GuestController::class, 'index'])->name('guest.index');
 // Pendaftaran
 Route::get('daftar/durasi-magang/{user}', [GuestController::class, 'durasiPendaftaran'])->name('guest.pendaftaran.durasi');
 Route::get('daftar/divisi/{user}/{durasi}', [GuestController::class, 'divisiPendaftaran'])->name('guest.pendaftaran.divisi');
-Route::get('daftar/{user}/{durasi}/{divisi}', [GuestController::class, 'pendaftaran'])->name('guest.pendaftaran');
+Route::get('daftar/{divisi}/{user}/{durasi}', [GuestController::class, 'pendaftaran'])->name('guest.pendaftaran');
+Route::post('daftar/formulir', [GuestController::class, 'formulir'])->name('guest.formulir');
 
 
 // Authentication
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('login/auth', [LoginController::class, 'authenticate'])->name('auth');
-Route::get('home', [HomeController::class, 'index'])->name('home');
+Route::get('home', [AdminController::class, 'index'])->name('home');
 
 // Administrator
 // Durasi
-Route::get('admin/durasi', [AdminController::class, 'durasi'])->name('admin.durasi');
+Route::get('admin/durasi/{user?}', [AdminController::class, 'durasi'])->name('admin.durasi');
 Route::post('admin/durasi/add', [AdminController::class, 'addDurasi'])->name('admin.durasi.add');
+Route::get('admin/durasi/show/{id}', [AdminController::class, 'showDurasi'])->name('admin.durasi.show');
 Route::put('admin/durasi/updateStatus', [AdminController::class, 'updateStatusDurasi'])->name('admin.durasi.updateStatus');
 Route::get('admin/durasi/delete/{durasi}', [AdminController::class, 'deleteDurasi'])->name('admin.durasi.delete');
 
 // Divisi
 Route::get('admin/divisi', [AdminController::class, 'divisi'])->name('admin.divisi');
+Route::get('admin/divisi/show/{id}', [AdminController::class, 'showDivisi'])->name('admin.divisi.show');
 Route::post('admin/divisi/add', [AdminController::class, 'addDivisi'])->name('admin.divisi.add');
 Route::get('admin/divisi/delete/{divisi}', [AdminController::class, 'deleteDivisi'])->name('admin.divisi.delete');
 

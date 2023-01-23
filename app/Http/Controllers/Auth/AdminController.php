@@ -6,22 +6,59 @@ use App\Models\Divisi;
 use App\Models\Durasi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 
 class AdminController extends Controller
 {
     private $validation = [
         'required' => 'kolom :attribute harus diisi.',
-        'unique' => 'field (:attribute) yang anda isi sudah ada.',
+        'unique' => 'field (:attribute) yang anda isi sudah ada.'
     ];
+
     /**
-     * Show durasi pages
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
+    {
+        return view('auth.master');
+    }
+
+    /**
+     * Show admin/durasi pages
      * 
      * @return view
      */
-    public function durasi()
-    {
-        $durasi = Durasi::all();
+    public function durasi(Request $request)
+    {   
+        if($request->pendidikan == null){
+            $durasi = Durasi::where('pendidikan', 'siswa')->get();
+        }else{
+            $durasi = Durasi::where('pendidikan', $request->pendidikan)->get();
+        }
         return view('auth.admin.durasi', compact('durasi'));
+    }
+
+    /**
+     * Show admin/durasi with condition
+     * 
+     * @return json
+     */
+    public function showDurasi($id)
+    {
+        $data = Durasi::find($id);
+        return response()->json($data);
     }
     /**
      * Post data durasi 
@@ -30,13 +67,20 @@ class AdminController extends Controller
      */
     public function addDurasi(Request $request)
     {
-        $request->validate([
-            'waktu' => 'required|unique:durasi,waktu_durasi'
-        ], $this->validation);
+        $validation = [
+            'waktu' => 'required',
+            'pendidikan' => 'required',
+            'limit' => 'required|numeric'
+        ];
 
-        $result = Durasi::create([
-            'waktu_durasi' => $request->waktu,
-            'status' => '1'
+        $request->validate($validation, $this->validation);
+
+        $result = Durasi::updateOrCreate([
+            'pendidikan' => $request->pendidikan,
+            'waktu_durasi' => $request->waktu
+        ],[
+            'limit' => $request->limit,
+            'status' => $request->has('status') ? $request->status : '0'
         ]);
 
         return redirect()->back();
@@ -48,7 +92,7 @@ class AdminController extends Controller
      * @return json
      */
     public function updateStatusDurasi(Request $request)
-    {
+    {   
         $waktu = Durasi::find($request->id);
         $waktu->status = $request->status;
         $waktu->save();
@@ -84,17 +128,42 @@ class AdminController extends Controller
     }
 
     /**
+     * Show admin/durasi with condition
+     * 
+     * @return json
+     */
+    public function showDivisi($id)
+    {
+        $data = Divisi::find($id);
+        return response()->json($data);
+    }
+
+    /**
      * Post divisi 
      * 
      * @return view
      */
     public function addDivisi(Request $request)
     {
-        $request->validate([
-            'divisi' => 'required|unique:divisi,nama_divisi'
-        ], $this->validation);
-
-        Divisi::create([ 'nama_divisi' => $request->divisi ]);
+        $validation = [
+            'syarat' => 'required',
+            'lokasi' => 'required'
+        ];
+        
+        if($request->has('divisi')){
+            $nama_divisi = $request->divisi;
+            $validation['divisi'] = 'required|unique:divisi,nama_divisi';
+        }else{
+            $nama_divisi = $request->editDivisi;
+        }
+        
+        $request->validate($validation, $this->validation);
+        Divisi::updateOrCreate([
+            'nama_divisi' => $nama_divisi,
+        ],[
+            'syarat' => $request->syarat,
+            'lokasi' => $request->lokasi,
+        ]);
 
         return redirect()->back();
     }
