@@ -21,11 +21,17 @@
                 <h3 class="text-capitalize fw-bolder mt-5" style="color: #32B5E9;">masukkan data diri ({{ $user }})</h3>
                 <div class="row mt-5">
                     <div class="col-md-8">
+                        @if(session('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                        @endif
                         <form action="{{ route('guest.formulir') }}" method="post" enctype="multipart/form-data">
                             <div class="d-grid gap-4">
                                 @csrf
                                 <input type="hidden" name="durasi" value="{{ $durasi->id }}">
                                 <input type="hidden" name="divisi" value="{{ $divisi->id }}">
+                                <input type="hidden" name="pendidikan" value="{{ $user }}">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <label class="fw-bold" for="nama">Nama:</label>
                                     <div class="w-75">
@@ -78,27 +84,18 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label class="fw-bold" for="jurusan">Jurusan:</label>
-                                    <div class="w-75">
-                                        <input type="text" class="form-control form-control-sm" id="jurusan"
-                                            name="jurusan" value="{{ old('jurusan') }}" aria-describedby="jurusanError">
-                                        @error('jurusan')
-                                        <small id="jurusanError" class="form-text text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
                                 @else
                                 <div class="d-flex justify-content-between align-items-center">
                                     <label class="fw-bold" for="asal">Asal Sekolah:</label>
                                     <div class="w-75">
-                                        <input type="text" class="form-control form-control-sm" id="asal"
-                                            name="asal" value="{{ old('asal') }}" aria-describedby="asalError">
+                                        <input type="text" class="form-control form-control-sm" id="asal" name="asal"
+                                            value="{{ old('asal') }}" aria-describedby="asalError">
                                         @error('asal')
                                         <small id="asalError" class="form-text text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
+                                @endif
                                 <div class="d-flex justify-content-between align-items-center">
                                     <label class="fw-bold" for="jurusan">Jurusan:</label>
                                     <div class="w-75">
@@ -109,7 +106,6 @@
                                         @enderror
                                     </div>
                                 </div>
-                                @endif
                                 <div class="d-flex justify-content-between align-items-center">
                                     <label class="fw-bold" for="pengantar">Surat Pengantar:</label>
                                     <div class="w-75">
