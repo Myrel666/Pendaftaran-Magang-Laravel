@@ -11,4 +11,9 @@ class Durasi extends Model
 
     protected $guarded = ['id'];
     protected $table = 'durasi';
+
+    public function pendaftar()
+    {
+        return $this->hasOne(Pendaftar::class);
+    }
 }

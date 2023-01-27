@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.beranda') }}">Home</a></li>
                         <li class="breadcrumb-item active">Data Pemagang</li>
                     </ol>
                 </div>
@@ -154,7 +154,7 @@
                     <input type="hidden" value="{{ $user->name }}" name="nama">
                     @endisset
                     <div class="form-group">
-                        <label>Pilih Pendidikan</label>
+                        <label>Pendidikan</label>
                         <select class="form-control" name="pendidikan" disabled>
                             <option value="siswa" id="siswa">Siswa</option>
                             <option value="mahasiswa" id="mahasiswa">Mahasiswa</option>
@@ -185,12 +185,10 @@ function showPemagang(id) {
         .then((response) => response.json())
         .then(data => {
             document.getElementById('editEmail').value = data.email;
-            if(data.mahasiswa_id != null){
+            if(data.pendaftar.pendidikan == 'mahasiswa'){
                 document.getElementById('mahasiswa').selected = true;
-            }
-
-            if(data.siswa_id != null){
-                document.getElementById('mahasiswa').selected = true;
+            }else if(data.pendaftar.pendidikan == 'siswa'){
+                document.getElementById('siswa').selected = true;
             }
         });
 }

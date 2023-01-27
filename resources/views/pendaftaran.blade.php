@@ -21,6 +21,11 @@
                 <h3 class="text-capitalize fw-bolder mt-5" style="color: #32B5E9;">masukkan data diri ({{ $user }})</h3>
                 <div class="row mt-5">
                     <div class="col-md-8">
+                        @if(session('limit'))
+                        <div class="alert alert-warning" role="alert">
+                            {{ session('limit') }}
+                        </div>
+                        @endif
                         @if(session('success'))
                         <div class="alert alert-success" role="alert">
                             {{ session('success') }}
@@ -62,47 +67,42 @@
                                         @enderror
                                     </div>
                                 </div>
-                                @if($user == 'mahasiswa')
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <label class="fw-bold" for="univ">Universitas:</label>
+                                    <label class="fw-bold" for="instansi">Instansi:</label>
                                     <div class="w-75">
-                                        <input type="text" class="form-control form-control-sm" id="univ" name="univ"
-                                            value="{{ old('univ') }}" aria-describedby="univError">
-                                        @error('univ')
-                                        <small id="univError" class="form-text text-danger">{{ $message }}</small>
+                                        <input type="text" class="form-control form-control-sm " id="instansi"
+                                            name="instansi" value="{{ old('instansi') }}" aria-describedby="instansiError">
+                                        @error('instansi')
+                                        <small id="instansiError" class="form-text text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="row justify-content-between align-items-center">
+                                    <div class="col-md-3">
+                                        <label for="form-check" class="fw-bold">Lokasi:</label>
+                                    </div>
+                                    @php $lokasi = explode(PHP_EOL, $divisi->lokasi) @endphp
+                                    <div class="col-md-9 offset-3" style="margin-top: -25px">
+                                        @foreach($lokasi as $lok)
+                                        @php $noNumber = explode(' ', $lok)[1] @endphp
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="lokasi"
+                                                id="inlineRadio1" value="{{ $noNumber }}" aria-describedby="lokasiError>
+                                            <label class="form-check-label" for="inlineRadio1">{{ $noNumber }}</label>
+                                        </div>
+                                        @endforeach
+                                        @error('lokasi')
+                                        <small id="lokasiError" class="form-text text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <label class="fw-bold" for="fakultas">Fakultas:</label>
+                                    <label class="fw-bold" for="foto">Foto:</label>
                                     <div class="w-75">
-                                        <input type="text" class="form-control form-control-sm" id="fakultas"
-                                            name="fakultas" value="{{ old('fakultas') }}"
-                                            aria-describedby="fakultasError">
-                                        @error('fakultas')
-                                        <small id="fakultasError" class="form-text text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                @else
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label class="fw-bold" for="asal">Asal Sekolah:</label>
-                                    <div class="w-75">
-                                        <input type="text" class="form-control form-control-sm" id="asal" name="asal"
-                                            value="{{ old('asal') }}" aria-describedby="asalError">
-                                        @error('asal')
-                                        <small id="asalError" class="form-text text-danger">{{ $message }}</small>
-                                        @enderror
-                                    </div>
-                                </div>
-                                @endif
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <label class="fw-bold" for="jurusan">Jurusan:</label>
-                                    <div class="w-75">
-                                        <input type="text" class="form-control form-control-sm" id="jurusan"
-                                            name="jurusan" value="{{ old('jurusan') }}" aria-describedby="jurusanError">
-                                        @error('jurusan')
-                                        <small id="jurusanError" class="form-text text-danger">{{ $message }}</small>
+                                        <input type="file" class="form-control form-control-sm" id="foto"
+                                            name="foto" aria-describedby="fotoError">
+                                        @error('foto')
+                                        <small id="fotoError" class="form-text text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <label class="fw-bold" for="vaksin">Vaksin (Vaksin ke-3):</label>
+                                    <label class="fw-bold" for="vaksin">Vaksin (Dosis ke-3):</label>
                                     <div class="w-75">
                                         <input type="file" class="form-control form-control-sm" id="vaksin"
                                             name="vaksin" aria-describedby="vaksinError">

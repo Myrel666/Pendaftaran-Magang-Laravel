@@ -13,21 +13,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mahasiswa', function (Blueprint $table) {
+        Schema::create('pendaftar', function (Blueprint $table) {
             $table->id();
             $table->foreignId('divisi_id')->constrained('divisi')->onUpdate('cascade')->onDelete('cascade'); 
             $table->foreignId('durasi_id')->constrained('durasi')->onUpdate('cascade')->onDelete('cascade'); 
+            $table->enum('status', ['lolos berkas', 'lolos wawancara', 'waiting list', 'tidak lolos']);
             $table->string('nama');
             $table->string('nomor_telepon');
             $table->string('email');
-            $table->string('universitas');
-            $table->string('fakultas');
-            $table->string('jurusan');
+            $table->string('instansi');
+            $table->string('lokasi', 50);
+            $table->enum('pendidikan', ['siswa', 'mahasiswa']);
+            $table->string('foto');
             $table->string('surat_pengantar');
             $table->string('proposal');
             $table->string('cv');
             $table->string('vaksin');
-            $table->timestamp('tgl_expired');
             $table->timestamps();
         });
     }
@@ -39,6 +40,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mahasiswa');
+        Schema::dropIfExists('pendaftar');
     }
 };

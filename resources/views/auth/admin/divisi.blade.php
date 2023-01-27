@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin.beranda') }}">Home</a></li>
                         <li class="breadcrumb-item active">Data Divisi</li>
                     </ol>
                 </div>
@@ -70,7 +70,7 @@
                                     @endisset
 
                                     @if($divisi->isEmpty())
-                                    <td colspan="4">Data tidak ada.</td>
+                                    <td colspan="5">Data tidak ada.</td>
                                     @endif
                             </table>
                         </div>

@@ -11,4 +11,9 @@ class Divisi extends Model
 
     protected $table = 'divisi';
     protected $guarded = ['id'];
+
+    public function pendaftar()
+    {
+        return $this->hasOne(Pendaftar::class);
+    }
 }

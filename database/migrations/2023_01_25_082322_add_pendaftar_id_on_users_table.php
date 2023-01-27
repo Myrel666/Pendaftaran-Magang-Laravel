@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('mahasiswa_id')->nullable()->after('id')->constrained('mahasiswa', 'id')->onDelete('set null');
-            $table->foreignId('siswa_id')->nullable()->after('id')->constrained('siswa', 'id')->onDelete('set null');
+            $table->foreignId('pendaftar_id')->after('role_id')->nullable()->constrained('pendaftar')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -27,8 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('siswa_id');
-            $table->dropColumn('mahasiswa_id');
+            $table->dropColumn('pendaftar_id');
         });
     }
 };

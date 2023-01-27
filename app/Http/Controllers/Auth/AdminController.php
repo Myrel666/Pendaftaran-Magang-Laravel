@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\auth;
 
 use App\Models\User;
-use App\Models\Siswa;
 use App\Models\Divisi;
+use App\Models\Lokasi;
 use App\Models\Durasi;
-use App\Models\Mahasiswa;
+use App\Models\Pendaftar;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Input;
 
 class AdminController extends Controller
@@ -25,7 +28,7 @@ class AdminController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('admin');
     }
 
     /**
@@ -35,7 +38,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('auth.master');
+        return view('auth.admin.index');
     }
 
     /**
@@ -202,7 +205,7 @@ class AdminController extends Controller
      */
     public function showPemagang($id)
     {
-        $data = User::find($id);
+        $data = User::with('pendaftar')->find($id);
         return response()->json($data);
     }
 
@@ -216,34 +219,48 @@ class AdminController extends Controller
         if($request->has('editEmail')){
             $validator['editEmail'] = 'required';
         }else{
-            $validator['email'] = 'required|unique:users,email';
+            $validator['email'] = 'required|email';
         }
 
         $request->validate($validator, [
             'required' => ':attribute harus diisi.',
-            'unique' => 'email sudah ada.'
+            'email' => ':attribute tidak valid.'
         ]);
+
+        $cekEmailOnUser = User::where('email', $request->email)->first();
+        if($cekEmailOnUser){
+            return redirect()->back()->withErrors(['msg' => 'Email Sudah Ada!']);
+        } 
 
         $data = [
             'email' => $request->has('id') ? $request->editEmail : $request->email,
             'role_id' => 2,
-            'password' => bcrypt('rahasiabro'),
         ];
 
         if(!$request->has('id')){
-            if($request->pendidikan == 'siswa'){
-                $emailCek = Siswa::where('email', $request->email)->first();
-                $data['siswa_id'] = $emailCek->id ?? NULL;
-            }else{
-                $emailCek = Mahasiswa::where('email', $request->email)->first();
-                $data['mahasiswa_id'] = $emailCek->id ?? NULL;
-            }
-            
+            $emailCek = Pendaftar::where('email', $request->email)->where('pendidikan', $request->pendidikan)->first();
+
             if($emailCek == null){
                 return redirect()->back()->withErrors(['msg' => 'Email Belum Terdaftar!']);
             }
 
+            // dd($emailCek->id);
+            $data['pendaftar_id'] = $emailCek->id;
             $data['name'] = $emailCek->nama ?? '';
+            $data['password'] = bcrypt('rahasiabro');
+
+            $token = Str::random(64);
+  
+            DB::table('password_resets')->insert([
+              'email' => $request->email, 
+              'token' => $token,
+              'created_at' => now()
+            ]);
+
+            Mail::send('auth.admin.mailPemagangLolos', ['token' => $token], function($message) use($request){
+                $message->to($request->email);
+                $message->subject('Pengumuman Seleksi Wawancara PT. Pelabuhan Indonesia Subregional Jawa');
+            });
         }else{
             $data['name'] = $request->nama;
         }
@@ -266,4 +283,49 @@ class AdminController extends Controller
 
         return redirect()->back();
     }
+
+    /**
+     * Show pendaftar page
+     * 
+     * @return view
+     */
+    public function pendaftar()
+    {
+        $pendaftar = Pendaftar::all();
+        $lokasi = Lokasi::all();
+        return view('auth.admin.pendaftar', compact('pendaftar','lokasi'));
+    }
+
+    /**
+     * Show detail pendaftar page
+     * 
+     * @return view
+     */
+    public function showPendaftar(Pendaftar $pendaftar)
+    {
+        $pendaftar = Pendaftar::find($pendaftar->id);
+        return view('auth.admin.detailPendaftar', compact('pendaftar'));
+    }
+
+    /**
+     * Change status pendaftar
+     * 
+     * @return view
+     */
+    public function updateStatusPendaftar(Request $request, $id)
+    {
+        if(count($request->all()) > 1){
+            if($request->has('validasi')) {
+                $status = $request->validasi;
+            }
+
+            $pendaftar = Pendaftar::find($id);
+            $pendaftar->status = $status;
+            $pendaftar->save();
+
+            return redirect()->route('admin.pendaftar');
+        }
+        return redirect()->back()->with('msg', 'Gagal Validasi Status!');
+    }
+
 }

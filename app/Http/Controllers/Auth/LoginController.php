@@ -36,7 +36,11 @@ class LoginController extends Controller
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
             // Authentication passed...
-            return redirect()->intended('home');
+            if(auth()->user()->role->name == 'admin'){
+                return redirect()->route('admin.beranda');
+            }else{
+                return redirect()->route('user.beranda');
+            }
         }
         return redirect()->back()->with('message', 'Email atau Password anda salah!');
     }

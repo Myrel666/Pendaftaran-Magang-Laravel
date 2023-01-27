@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\AdminController;
+use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GuestController;
 use Illuminate\Support\Facades\Route;
@@ -32,9 +33,15 @@ Route::post('daftar/formulir', [GuestController::class, 'formulir'])->name('gues
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::get('logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('login/auth', [LoginController::class, 'authenticate'])->name('auth');
-Route::get('home', [AdminController::class, 'index'])->name('home');
+
+// Forgot Password
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 // Administrator
+Route::get('home', [AdminController::class, 'index'])->name('admin.beranda');
 // Durasi
 Route::get('admin/durasi/{user?}', [AdminController::class, 'durasi'])->name('admin.durasi');
 Route::post('admin/durasi/add', [AdminController::class, 'addDurasi'])->name('admin.durasi.add');
@@ -56,8 +63,10 @@ Route::post('admin/pemagang/add', [AdminController::class, 'addOrUpdatePemagang'
 Route::get('admin/pemagang/delete/{id}', [AdminController::class, 'deletePemagang'])->name('admin.pemagang.delete');
 
 
-// Forgot Password
-Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
-Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
-Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
-Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+// Pendaftar
+Route::get('admin/pendaftar', [AdminController::class, 'pendaftar'])->name('admin.pendaftar');
+Route::get('admin/pendaftar/show/{pendaftar}', [AdminController::class, 'showPendaftar'])->name('admin.pendaftar.detail');
+Route::post('admin/pendaftar/updateStatus/{id}', [AdminController::class, 'updateStatusPendaftar'])->name('admin.pendaftar.changeStatus');
+
+// User
+Route::get('beranda', [UserController::class, 'index'])->name('user.beranda');

@@ -20,7 +20,15 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Role::create([
         //     'name' => 'user'
         // ]);
-        \App\Models\User::factory(5)->create();
+
+        \DB::table('lokasi')->insert([
+            ['name' => 'Surabaya'],
+            ['name' => 'Gresik'],
+            ['name' => 'Probolinggo'],
+            ['name' => 'Semarang'],
+            ['name' => 'Tegal']
+        ]);
+        // \App\Models\User::factory(1)->create();
 
     }
 }
