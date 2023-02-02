@@ -21,14 +21,14 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'user'
         // ]);
 
-        \DB::table('lokasi')->insert([
-            ['name' => 'Surabaya'],
-            ['name' => 'Gresik'],
-            ['name' => 'Probolinggo'],
-            ['name' => 'Semarang'],
-            ['name' => 'Tegal']
-        ]);
-        // \App\Models\User::factory(1)->create();
+        // \DB::table('lokasi')->insert([
+        //     ['name' => 'Surabaya'],
+        //     ['name' => 'Gresik'],
+        //     ['name' => 'Probolinggo'],
+        //     ['name' => 'Semarang'],
+        //     ['name' => 'Tegal']
+        // ]);
+        \App\Models\User::factory(1)->create();
 
     }
 }

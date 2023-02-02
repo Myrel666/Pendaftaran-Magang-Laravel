@@ -153,19 +153,22 @@
                 <form action="{{ route('admin.pendaftar.changeStatus', $pendaftar->id) }}" method="post">
                     @csrf
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="validasi" id="flexRadioDefault1" value="lolos berkas">
+                        <input class="form-check-input" type="radio" name="validasi" id="flexRadioDefault1"
+                            value="lolos berkas">
                         <label class="form-check-label" for="flexRadioDefault1">
                             Lolos Berkas
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="validasi" id="flexRadioDefault1" value="diterima">
+                        <input class="form-check-input" type="radio" name="validasi" id="flexRadioDefault1"
+                            value="diterima">
                         <label class="form-check-label" for="flexRadioDefault1">
                             Diterima
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="validasi" id="flexRadioDefault1" value="tidak lolos">
+                        <input class="form-check-input" type="radio" name="validasi" id="flexRadioDefault1"
+                            value="tidak lolos">
                         <label class="form-check-label" for="flexRadioDefault1">
                             Tidak Lolos
                         </label>

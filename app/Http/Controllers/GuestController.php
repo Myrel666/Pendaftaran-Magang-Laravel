@@ -88,8 +88,6 @@ class GuestController extends Controller
             'max' => 'file size maksimal 1 MB.',
         ]);
 
-        
-
         // data yang mau dimasukkan di db
         $data = [
             'divisi_id' => $request->divisi,

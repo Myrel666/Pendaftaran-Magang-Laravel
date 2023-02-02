@@ -55,6 +55,14 @@ Route::get('admin/divisi/show/{id}', [AdminController::class, 'showDivisi'])->na
 Route::post('admin/divisi/add', [AdminController::class, 'addDivisi'])->name('admin.divisi.add');
 Route::get('admin/divisi/delete/{divisi}', [AdminController::class, 'deleteDivisi'])->name('admin.divisi.delete');
 
+// Pengajuan
+Route::get('admin/pengajuan', [AdminController::class, 'pengajuan'])->name('admin.pengajuan');
+Route::get('admin/pengajuan/detail/{id}', [AdminController::class, 'detailPengajuan'])->name('admin.pengajuan.detail');
+Route::post('admin/pengajuan/updateStatus/{id}', [AdminController::class, 'updateStatuspengajuan'])->name('admin.pengajuan.changeStatus');
+
+// Presensi
+Route::get('admin/presensi', [AdminController::class, 'presensi'])->name('admin.presensi');
+Route::get('admin/presensi/detail/{id}', [AdminController::class, 'detailPresensi'])->name('admin.presensi.detail');
 
 // Pemagang
 Route::get('admin/pemagang', [AdminController::class, 'pemagang'])->name('admin.pemagang');
@@ -68,5 +76,18 @@ Route::get('admin/pendaftar', [AdminController::class, 'pendaftar'])->name('admi
 Route::get('admin/pendaftar/show/{pendaftar}', [AdminController::class, 'showPendaftar'])->name('admin.pendaftar.detail');
 Route::post('admin/pendaftar/updateStatus/{id}', [AdminController::class, 'updateStatusPendaftar'])->name('admin.pendaftar.changeStatus');
 
+
+
 // User
 Route::get('beranda', [UserController::class, 'index'])->name('user.beranda');
+
+// Pengajuan
+Route::get('user/pengajuan', [UserController::class, 'pengajuan'])->name('user.pengajuan');
+Route::get('user/pengajuan/show/{id}', [UserController::class, 'showPengajuan'])->name('user.pengajuan.show');
+Route::post('user/pengajuan/add', [UserController::class, 'addOrUpdatePengajuan'])->name('user.pengajuan.add');
+Route::get('user/pengajuan/delete/{pengajuan}', [UserController::class, 'deletePengajuan'])->name('user.pengajuan.delete');
+
+// Absensi
+Route::get('time', [UserController::class, 'time'])->name('time');
+Route::post('user/absensi', [UserController::class, 'absensi'])->name('user.absensi');
+Route::get('user/log-presensi', [UserController::class, 'logPresensi'])->name('user.log');

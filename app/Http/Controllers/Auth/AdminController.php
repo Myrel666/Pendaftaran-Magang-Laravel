@@ -4,9 +4,11 @@ namespace App\Http\Controllers\auth;
 
 use App\Models\User;
 use App\Models\Divisi;
-use App\Models\Lokasi;
 use App\Models\Durasi;
+use App\Models\Lokasi;
+use App\Models\Presensi;
 use App\Models\Pendaftar;
+use App\Models\Pengajuan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -328,4 +330,68 @@ class AdminController extends Controller
         return redirect()->back()->with('msg', 'Gagal Validasi Status!');
     }
 
+    /**
+     * Show pengajuan page
+     * 
+     * @return view
+     */
+    public function pengajuan()
+    {
+        $pengajuan = Pengajuan::all();
+        return view('auth.admin.pengajuan', compact('pengajuan'));
+    }
+
+    /**
+     * Show detail pengajuan page
+     * 
+     * @return view
+     */
+    public function detailPengajuan($id)
+    {
+        $pengajuan = Pengajuan::find($id);
+        return view('auth.admin.detailPengajuan', compact('pengajuan'));
+    }
+
+    /**
+     * Change status pengajuan
+     * 
+     * @return view
+     */
+    public function updateStatusPengajuan(Request $request, $id)
+    {
+        if(count($request->all()) > 1){
+            if($request->has('validasi')) {
+                $status = $request->validasi;
+            }
+
+            $pendaftar = Pengajuan::find($id);
+            $pendaftar->status = $status;
+            $pendaftar->save();
+
+            return redirect()->route('admin.pengajuan');
+        }
+        return redirect()->back()->with('msg', 'Gagal Validasi Status!');
+    }
+
+    /**
+     * Show presensi page
+     * 
+     * @return view
+     */
+    public function presensi()
+    {
+        $presensi = Presensi::all();
+        return view('auth.admin.presensi', compact('presensi'));
+    }
+
+    /**
+     * Show detail presensi page
+     * 
+     * @return view
+     */
+    public function detailpresensi($id)
+    {
+        $presensi = Presensi::find($id);
+        return view('auth.admin.detailpresensi', compact('presensi'));
+    }
 }

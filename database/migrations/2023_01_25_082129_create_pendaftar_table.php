@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('divisi_id')->constrained('divisi')->onUpdate('cascade')->onDelete('cascade'); 
             $table->foreignId('durasi_id')->constrained('durasi')->onUpdate('cascade')->onDelete('cascade'); 
-            $table->enum('status', ['lolos berkas', 'lolos wawancara', 'waiting list', 'tidak lolos']);
+            $table->enum('status', ['belum diproses','lolos berkas','diterima', 'tidak lolos']);
             $table->string('nama');
             $table->string('nomor_telepon');
             $table->string('email');

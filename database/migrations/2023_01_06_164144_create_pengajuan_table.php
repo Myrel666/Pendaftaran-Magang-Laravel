@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('pengajuan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade'); 
-            $table->string('alasan');
+            $table->enum('alasan', ['sakit', 'izin']);
+            $table->string('keterangan');
             $table->enum('status', ['ditolak', 'diproses', 'disetujui']);
             $table->timestamps();
         });
