@@ -14,20 +14,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\Role::create([
-        //     'name' => 'admin'
-        // ]);
-        // \App\Models\Role::create([
-        //     'name' => 'user'
-        // ]);
+        \App\Models\Role::create([
+            'name' => 'admin'
+        ]);
+        \App\Models\Role::create([
+            'name' => 'user'
+        ]);
 
-        // \DB::table('lokasi')->insert([
-        //     ['name' => 'Surabaya'],
-        //     ['name' => 'Gresik'],
-        //     ['name' => 'Probolinggo'],
-        //     ['name' => 'Semarang'],
-        //     ['name' => 'Tegal']
-        // ]);
+        \DB::table('lokasi')->insert([
+            ['name' => 'Surabaya'],
+            ['name' => 'Gresik'],
+            ['name' => 'Probolinggo'],
+            ['name' => 'Semarang'],
+            ['name' => 'Tegal']
+        ]);
         \App\Models\User::factory(1)->create();
 
     }

@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
 @endpush
 @section('content')
+@inject('carbon', 'Carbon\Carbon')
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -119,7 +120,9 @@
                                                     }elseif($dataPresensi[$tgl]->bukti_masuk == null){
                                                     $status = 'Hadir Tanpa Absen Masuk';
                                                     }elseif($pulang < '17:00:00' && $masuk <='08:00:00' ){
-                                                        $status='Hadir Pulang Cepat' ; } @endphp
+                                                    $status='Hadir Pulang Cepat' ; 
+                                                    } 
+                                                @endphp
                                                         @elseif(isset($dataPengajuan[$tgl])) 
                                                         @php
                                                         if($dataPengajuan[$tgl]->
@@ -128,14 +131,17 @@
                                                         Dengan
                                                         Keterangan)" : "IDK (Izin Dengan Keterangan)";
                                                         }else{
-                                                        $status = 'A';
+                                                        $status = '-';
                                                         }
                                                         @endphp
+                                                        @elseif ($carbon::now() > $tgl)
+                                                        @php
+                                                            $status = 'A';
+                                                        @endphp
                                                         @else
-                                                        @php $status = 'A' @endphp
+                                                        @php $status = '-'; @endphp
                                                         @endif
-
-
+                                                        
                                                         {{ $status }}
                                             </td>
                                         </tr>

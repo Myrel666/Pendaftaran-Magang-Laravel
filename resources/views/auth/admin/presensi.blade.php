@@ -50,8 +50,8 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $absen->tgl }}</td>
                                     <td>{{ $absen->user->name }}</td>
-                                    <td>{{ $absen->created_at->format('H:i:s') }}</td>
-                                    <td>{{ $absen->updated_at->format('H:i:s') }}</td>
+                                    <td>{{ $absen->created_at != null ? $absen->created_at->format('H:i:s') : '00:00:00' }}</td>
+                                    <td>{{ $absen->updated_at != null ? $absen->updated_at->format('H:i:s') : '00:00:00' }}</td>
                                     <td><a href="{{ route('admin.presensi.detail', $absen->id) }}" class="btn btn-outline-info btn-sm">Detail</a></td>
                                     @endforeach
                                 </tbody>

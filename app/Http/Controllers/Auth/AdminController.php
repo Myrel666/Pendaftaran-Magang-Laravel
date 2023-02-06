@@ -259,10 +259,21 @@ class AdminController extends Controller
               'created_at' => now()
             ]);
 
-            Mail::send('auth.admin.mailPemagangLolos', ['token' => $token], function($message) use($request){
+            
+            Mail::send('auth.admin.mail.mailPemagangLolos', ['token' => $token], function($message) use($request){
                 $message->to($request->email);
                 $message->subject('Pengumuman Seleksi Wawancara PT. Pelabuhan Indonesia Subregional Jawa');
             });
+
+            // Mail::send('auth.admin.mail.mailPemagangLolosBerkas', function($message) use($request){
+            //     $message->to($request->email); 
+            //     $message->subject('Pengumuman Hasil Seleksi Program Magang PT. Pelabuhan Indonesia'); 
+            // });
+
+            // Mail::send('auth.admin.mail.mailPemagangTidakLolos', function($message) use($request){
+            //     $message->to($request->email); 
+            //     $message->subject('Pengumuman Hasil Seleksi Program Magang PT. Pelabuhan Indonesia'); 
+            // });
         }else{
             $data['name'] = $request->nama;
         }
@@ -320,6 +331,26 @@ class AdminController extends Controller
             if($request->has('validasi')) {
                 $status = $request->validasi;
             }
+
+            // if($status == 'lolos berkas'){
+            //     // Email lolos berkas
+            //     Mail::send('auth.admin.mail.mailPemagangLolosBerkas', function($message) use($request){
+            //         $message->to($request->email); 
+            //         $message->subject('Pengumuman Hasil Seleksi Program Magang PT. Pelabuhan Indonesia'); 
+            //     });
+            // }else if($status == 'diterima'){
+            //     //Email yang diterima
+            //     Mail::send('auth.admin.mail.mailPemagangLolos', ['token' => $token], function($message) use($request){
+            //         $message->to($request->email); 
+            //         $message->subject('Pengumuman Hasil Seleksi Program Magang PT. Pelabuhan Indonesia'); 
+            //     });
+            // }else if($status == 'tidak lolos'){
+            //     // Email yang tidak lolos
+            //     Mail::send('auth.admin.mail.mailPemagangTidakLolos', function($message) use($request){
+            //         $message->to($request->email); 
+            //         $message->subject('Pengumuman Hasil Seleksi Program Magang PT. Pelabuhan Indonesia'); 
+            //     });
+            // }
 
             $pendaftar = Pendaftar::find($id);
             $pendaftar->status = $status;
@@ -381,6 +412,7 @@ class AdminController extends Controller
     public function presensi()
     {
         $presensi = Presensi::all();
+        dd($presensi);
         return view('auth.admin.presensi', compact('presensi'));
     }
 
