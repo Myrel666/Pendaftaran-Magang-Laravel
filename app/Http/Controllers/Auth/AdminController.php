@@ -196,7 +196,7 @@ class AdminController extends Controller
      */
     public function pemagang()
     {
-        $users = User::where('role_id', 2)->get();
+        $users = User::with('pendaftar')->where('role_id', 2)->get();
         return view('auth.admin.pemagang', compact('users'));
     }
 
@@ -259,7 +259,7 @@ class AdminController extends Controller
               'created_at' => now()
             ]);
 
-            Mail::send('auth.admin.mailPemagangLolos', ['token' => $token], function($message) use($request){
+            Mail::send('auth.admin.mail.mailPemagangLolos', ['token' => $token], function($message) use($request){
                 $message->to($request->email);
                 $message->subject('Pengumuman Seleksi Wawancara PT. Pelabuhan Indonesia Subregional Jawa');
             });
@@ -321,6 +321,20 @@ class AdminController extends Controller
                 $status = $request->validasi;
             }
 
+            if($status == 'lolos berkas'){
+                // Email lolos berkas
+                Mail::send('auth.admin.mail.mailPemagangLolosBerkas',[], function($message) use($request){
+                    $message->to($request->email); 
+                    $message->subject('Pengumuman Hasil Seleksi Program Magang PT. Pelabuhan Indonesia'); 
+                });
+            }else if($status == 'tidak lolos'){
+                // Email yang tidak lolos
+                Mail::send('auth.admin.mail.mailPemagangTidakLolos',[], function($message) use($request){
+                    $message->to($request->email); 
+                    $message->subject('Pengumuman Hasil Seleksi Program Magang PT. Pelabuhan Indonesia'); 
+                });
+            }
+
             $pendaftar = Pendaftar::find($id);
             $pendaftar->status = $status;
             $pendaftar->save();
@@ -337,8 +351,21 @@ class AdminController extends Controller
      */
     public function pengajuan()
     {
-        $pengajuan = Pengajuan::all();
+        $pengajuan = Pengajuan::orderBy('user_id')->get()->groupBy(function($query){
+            return $query->user->name;
+        });
         return view('auth.admin.pengajuan', compact('pengajuan'));
+    }
+
+    /**
+     * Show log pengajuan page
+     * 
+     * @return view
+     */
+    public function logPengajuan($id)
+    {
+        $pengajuan = Pengajuan::where('user_id', $id)->get();
+        return view('auth.admin.logPengajuan', compact('pengajuan'));
     }
 
     /**
@@ -380,8 +407,22 @@ class AdminController extends Controller
      */
     public function presensi()
     {
-        $presensi = Presensi::all();
+        $presensi = Presensi::orderBy('user_id')->get()->groupBy(function($query){
+            return $query->user->name;
+        });
         return view('auth.admin.presensi', compact('presensi'));
+    }
+
+    /**
+     * Show log presensi page
+     * 
+     * @return view
+     */
+    public function logPresensi($id)
+    {
+        $presensi = Presensi::where('user_id', $id)->get();
+        $pengajuan = Pengajuan::where('user_id', $id)->get();
+        return view('auth.admin.log', compact('presensi', 'pengajuan'));
     }
 
     /**
@@ -389,9 +430,9 @@ class AdminController extends Controller
      * 
      * @return view
      */
-    public function detailpresensi($id)
+    public function detailPresensi($id)
     {
         $presensi = Presensi::find($id);
-        return view('auth.admin.detailpresensi', compact('presensi'));
+        return view('auth.admin.detailPresensi', compact('presensi'));
     }
 }

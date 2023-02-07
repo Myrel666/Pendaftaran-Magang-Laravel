@@ -38,21 +38,19 @@
                                 <thead>
                                     <tr>
                                         <th>No. </th>
-                                        <th>Tanggal</th>
                                         <th>Nama</th>
-                                        <th>Jam Masuk</th>
-                                        <th>Jam Pulang</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($presensi as $absen)
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $absen->tgl }}</td>
-                                    <td>{{ $absen->user->name }}</td>
-                                    <td>{{ $absen->created_at->format('H:i:s') }}</td>
-                                    <td>{{ $absen->updated_at->format('H:i:s') }}</td>
-                                    <td><a href="{{ route('admin.presensi.detail', $absen->id) }}" class="btn btn-outline-info btn-sm">Detail</a></td>
+                                    @foreach($presensi as $absen => $listAbsen)
+                                    <tr>
+                                        <td width="10%">{{ $loop->iteration }}</td>
+                                        <td>{{ $absen }}</td>
+                                        <td width="20%">
+                                            <a href="{{ route('admin.presensi.log', $listAbsen[0]->user_id) }}" class="btn btn-outline-info btn-sm">Detail</a>
+                                        </td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -83,11 +81,11 @@ $(document).ready(function() {
     dataTable = $('#pengajuanTable').DataTable({
         "columnDefs": [{
                 "orderable": false,
-                "targets": [4, 5]
+                "targets": [2]
             },
             {
                 "searchable": false,
-                "targets": [4, 5]
+                "targets": [2]
             },
         ]
     });

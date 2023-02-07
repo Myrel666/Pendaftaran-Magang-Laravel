@@ -152,6 +152,7 @@
             <div class="modal-body">
                 <form action="{{ route('admin.pendaftar.changeStatus', $pendaftar->id) }}" method="post">
                     @csrf
+                    <input type="hidden" value="{{ $pendaftar->email }}" name="email">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="validasi" id="flexRadioDefault1"
                             value="lolos berkas">

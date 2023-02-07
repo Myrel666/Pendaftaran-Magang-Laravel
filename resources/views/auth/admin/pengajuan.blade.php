@@ -38,30 +38,17 @@
                                 <thead>
                                     <tr>
                                         <th>No. </th>
-                                        <th>Tanggal</th>
                                         <th>Nama</th>
-                                        <th>Alasan</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($pengajuan as $ajuan)
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $ajuan->created_at }}</td>
-                                    <td>{{ $ajuan->user->name }}</td>
-                                    <td>{{ $ajuan->alasan }}</td>
-                                    <td>
-                                        @if($ajuan->status == 'ditolak')
-                                            <div class="badge badge-danger">{{ $ajuan->status }}</div>
-                                        @elseif($ajuan->status == 'disetujui')
-                                            <div class="badge badge-success">{{ $ajuan->status }}</div>
-                                        @else
-                                        <div class="badge badge-warning">{{ $ajuan->status }}</div>
-                                        @endif
-                                        
-                                    </td>
-                                    <td><a href="{{ route('admin.pengajuan.detail', $ajuan->id) }}" class="btn btn-outline-info btn-sm">Detail</a></td>
+                                    @foreach($pengajuan as $ajuan => $listAjuan)
+                                    <tr>
+                                        <td width="10%">{{ $loop->iteration }}</td>
+                                        <td>{{ $ajuan }}</td>
+                                        <td width="20%"><a href="{{ route('admin.pengajuan.log', $listAjuan[0]->user_id) }}" class="btn btn-outline-info btn-sm">Detail</a></td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -92,11 +79,11 @@ $(document).ready(function() {
     dataTable = $('#pengajuanTable').DataTable({
         "columnDefs": [{
                 "orderable": false,
-                "targets": [4, 5]
+                "targets": [2]
             },
             {
                 "searchable": false,
-                "targets": [4, 5]
+                "targets": [2]
             },
         ]
     });

@@ -51,7 +51,7 @@
                                 </a>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <a href="{{ route('admin.presensi') }}" class="btn btn-info btn-sm float-end px-4">Kembali</a>
+                                <a href="{{ url()->previous() }}" class="btn btn-info btn-sm float-end px-4">Kembali</a>
                             </div>
                         </div>
                     </div>

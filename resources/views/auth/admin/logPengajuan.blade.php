@@ -3,7 +3,6 @@
 @push('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.4/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
 @endpush
 @section('title', 'Montern')
 @section('content')
@@ -13,12 +12,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Pendaftar</h1>
+                    <h1>Pengajuan</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.beranda') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Pendaftar</li>
+                        <li class="breadcrumb-item active">Pengajuan</li>
                     </ol>
                 </div>
             </div>
@@ -31,54 +30,42 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Tabel Pendaftar</h3>
+                            <h3 class="card-title">Tabel Pengajuan</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-3 col-7 d-flex align-items-center">
-                                    <span class="mr-2">Lokasi: </span>
-                                    <select name="lokasi" class="custom-select custom-select-sm" onchange="filterLokasi()"
-                                        aria-label=".form-select-sm example">
-                                        <option value="" selected>Pilih Lokasi</option>
-                                        @foreach($lokasi as $lok)
-                                        <option value="{{ $lok->name }}">{{ $lok->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="border-bottom border-secondary my-3"></div>
-                            <table id="pendaftarTable" class="table table-striped table-bordered table-responsive-md text-center"
+                            <table id="pengajuanTable"
+                                class="table table-striped table-bordered table-responsive-md text-center"
                                 style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>No. </th>
-                                        <th>Nama</th>
-                                        <th class="lokasi">Lokasi</th>
-                                        <th>Divisi</th>
+                                        <th>Tanggal</th>
+                                        <th>Alasan</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($pendaftar as $daftar)
+                                    @php $user @endphp
+                                    @foreach($pengajuan as $ajuan)
+                                    @php $user = $ajuan->user->name @endphp
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $daftar->nama }}</td>
-                                        <td>{{ $daftar->lokasi }}</td>
-                                        <td>{{ $daftar->divisi->nama_divisi }}</td>
+                                        <td>{{ $ajuan->created_at }}</td>
+                                        <td>{{ $ajuan->alasan }}</td>
                                         <td>
-                                            @if($daftar->status == 'belum diproses' )
-                                            <span class="badge bg-warning">{{ $daftar->status }}</span>
-                                            @elseif($daftar->status == 'lolos berkas')
-                                            <span class="badge bg-info">{{ $daftar->status }}</span>
-                                            @elseif($daftar->status == 'diterima')
-                                            <span class="badge bg-success">{{ $daftar->status }}</span>
-                                            @elseif($daftar->status == 'tidak lolos')
-                                            <span class="badge bg-danger">{{ $daftar->status }}</span>
+                                            @if($ajuan->status == 'ditolak')
+                                            <div class="badge badge-danger">{{ $ajuan->status }}</div>
+                                            @elseif($ajuan->status == 'disetujui')
+                                            <div class="badge badge-success">{{ $ajuan->status }}</div>
+                                            @else
+                                            <div class="badge badge-warning">{{ $ajuan->status }}</div>
                                             @endif
+
                                         </td>
-                                        <td><a href="{{ route('admin.pendaftar.detail', $daftar->id) }}" class="text-dark">Detail</a></td>
+                                        <td><a href="{{ route('admin.pengajuan.detail', $ajuan->id) }}"
+                                                class="btn btn-outline-info btn-sm">Detail</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -102,7 +89,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
 
 <!-- pdf button -->
 <script src="https://cdn.datatables.net/buttons/2.3.4/js/dataTables.buttons.min.js"></script>
@@ -116,23 +102,23 @@
 var dataTable;
 
 $(document).ready(function() {
-    dataTable = $('#pendaftarTable').DataTable({
+    dataTable = $('#pengajuanTable').DataTable({
         dom: 'Bfrtip',
         buttons: [{
             extend: 'pdfHtml5',
-            title: 'Data Pendaftar',
-            filename: 'Data Pendaftar',
+            title: 'Log Pengajuan',
+            filename: 'Data Pengajuan {{ $user }}',
             exportOptions: {
-                columns: [ 0, 1, 2, 3, 4]
+                columns: [ 0, 1, 2, 3 ]
             }
         }],
         "columnDefs": [{
                 "orderable": false,
-                "targets": [4, 5]
+                "targets": [3, 4]
             },
             {
                 "searchable": false,
-                "targets": [4, 5]
+                "targets": [3, 4]
             },
         ]
     });
@@ -140,12 +126,6 @@ $(document).ready(function() {
     $('.buttons-pdf').addClass('btn btn-outline-info btn-sm');
     $('.buttons-pdf').removeClass('dt-button');
     $('.buttons-pdf span').html('<i class="bi bi-filetype-pdf me-1"></i> Export PDF');
-
 });
-
-function filterLokasi() {
-    let pilihanLokasi = $('select[name=lokasi] option').filter(':selected').val();
-    dataTable.columns('.lokasi').search(pilihanLokasi).draw();
-}
 </script>
 @endpush

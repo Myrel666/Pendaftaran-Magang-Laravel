@@ -59,10 +59,12 @@ Route::get('admin/divisi/delete/{divisi}', [AdminController::class, 'deleteDivis
 Route::get('admin/pengajuan', [AdminController::class, 'pengajuan'])->name('admin.pengajuan');
 Route::get('admin/pengajuan/detail/{id}', [AdminController::class, 'detailPengajuan'])->name('admin.pengajuan.detail');
 Route::post('admin/pengajuan/updateStatus/{id}', [AdminController::class, 'updateStatuspengajuan'])->name('admin.pengajuan.changeStatus');
+Route::get('admin/pengajuan/log/{id}', [AdminController::class, 'logPengajuan'])->name('admin.pengajuan.log');
 
 // Presensi
 Route::get('admin/presensi', [AdminController::class, 'presensi'])->name('admin.presensi');
 Route::get('admin/presensi/detail/{id}', [AdminController::class, 'detailPresensi'])->name('admin.presensi.detail');
+Route::get('admin/presensi/log/{id}', [AdminController::class, 'logPresensi'])->name('admin.presensi.log');
 
 // Pemagang
 Route::get('admin/pemagang', [AdminController::class, 'pemagang'])->name('admin.pemagang');

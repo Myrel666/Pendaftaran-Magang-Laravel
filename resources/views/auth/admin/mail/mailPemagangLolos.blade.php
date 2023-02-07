@@ -2,7 +2,7 @@
 
 <p>
     Anda berhasil lolos pada tahap interview dan diterima magang di PT. Pelabuhan Indonesia [Subregional Jawa] <br>
-    Selanjutnya anda diberi akun untuk melakukan presensi, pengajuan izin dan laporan kegiatan.
+    Selanjutnya anda diberi akun untuk mendapatkan akses kegiatan presensi.
     <br>Pertama anda harus melakukan reset password terlebih dahulu.
 </p>
 
