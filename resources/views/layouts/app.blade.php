@@ -144,7 +144,15 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-header">Pendaftaran Magang</li>
+                        <li class="nav-header">Pengaturan Pendaftaran</li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.pendaftar') }}" class="nav-link">
+                                <i class="nav-icon fas fa-user-plus"></i>
+                                <p>
+                                    Data Pendaftar
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="{{ route('admin.durasi') }}" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
@@ -154,10 +162,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('admin.pendaftar') }}" class="nav-link">
-                                <i class="nav-icon fas fa-user-plus"></i>
+                            <a href="{{ route('admin.divisi.formulir') }}" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
                                 <p>
-                                    Pendaftar
+                                    Pengaturan Formulir
                                 </p>
                             </a>
                         </li>

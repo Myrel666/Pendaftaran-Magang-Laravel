@@ -8,12 +8,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Data Divisi</h1>
+                    <h1>Pengaturan Formulir</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('admin.beranda') }}">Home</a></li>
-                        <li class="breadcrumb-item active">Data Divisi</li>
+                        <li class="breadcrumb-item active">Pengaturan Formulir</li>
                     </ol>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Tabel Divisi</h3>
+                            <h3 class="card-title">Tabel Divisi Formulir</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -34,13 +34,15 @@
 
                             </div>
                             <a class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#addModal">
-                                <i class="bi bi-plus-lg"></i> Tambah Divisi
+                                <i class="bi bi-plus-lg"></i> Tambah Persyaratan
                             </a>
                             <table id="durasiTabel" class="table table-bordered table-striped table-responsive-md">
                                 <thead class="text-center">
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama Divisi</th>
+                                        <th>Persyaratan</th>
+                                        <th>Lokasi</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -49,14 +51,16 @@
                                     @foreach($divisi as $dvs)
                                     <tr>
                                         <td width="5%">{{ $loop->iteration }}</td>
-                                        <td class="text-capitalize">{{ $dvs->nama_divisi }}</td>
+                                        <td class="text-capitalize">{{ $dvs->divisi->nama_divisi }}</td>
+                                        <td style="white-space: pre-line">{{ $dvs->syarat }}</td>
+                                        <td style="white-space: pre-line">{{ $dvs->lokasi }}</td>
                                         <td width="10%">
                                             <a href="javascript:void(0)" class="text-decoration-none text-warning"
                                                 data-toggle="modal" data-target="#editModal"
-                                                onclick="showDivisi({{ $dvs->id }})">
+                                                onclick="showDivisiFormulir({{ $dvs->id }})">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <a href="{{ route('admin.divisi.delete', $dvs->id) }}"
+                                            <a href="{{ route('admin.divisi.formulir.delete', $dvs->id) }}"
                                                 class="text-decoration-none text-danger"
                                                 onclick="return confirm('Apakah anda yakin ingin menghapus ini?')"><i
                                                     class="bi bi-trash3"></i></a>
@@ -93,14 +97,35 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('admin.divisi.add') }}" method="post">
+            <form action="{{ route('admin.divisi.formulir.add') }}" method="post">
                 <div class="modal-body">
                     @csrf
                     <div class="mb-3">
                         <label for="divisi" class="form-label">Nama Divisi</label>
-                        <input type="text" class="form-control" id="divisi" placeholder="Sumber Daya Manusia (SDM)"
-                            name="divisi">
-                        @error('divisi')
+                        <select class="custom-select" name="idDivisi">
+                            <option selected>...</option>
+                            @foreach($listDivisi as $dvs)
+                            <option value="{{ $dvs->id }}">{{ $dvs->nama_divisi }}</option>
+                            @endforeach
+                        </select>
+                        @error('idDivisi')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="syarat" class="form-label">Syarat</label>
+                        <textarea rows="3" class="form-control" id="syarat"
+                            placeholder="1. Warga Negara Indonesia.&#10;2. Jurusan Psikologi dan sejenisnya."
+                            name="syarat"></textarea>
+                        @error('syarat')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="lokasi" class="form-label">Lokasi</label>
+                        <textarea rows="3" class="form-control" id="lokasi" placeholder="1. Surabaya&#10;2. Gresik"
+                            name="lokasi"></textarea>
+                        @error('lokasi')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
@@ -125,15 +150,30 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('admin.divisi.add') }}" method="post">
+            <form action="{{ route('admin.divisi.formulir.add') }}" method="post">
                 <div class="modal-body">
                     @csrf
-                    <input type="hidden" name="editIdDivisi" value="" id="editIdDivisi">
                     <div class="mb-3">
                         <label for="editDivisi" class="form-label">Nama Divisi</label>
-                        <input type="text" class="form-control" id="editDivisi" placeholder="Sumber Daya Manusia (SDM)"
-                            name="editDivisi">
-                        @error('editDivisi')
+                        <select class="custom-select" disabled>
+                            <option value="" selected id="divisi">...</option>
+                        </select>
+                        <input type="hidden" value="" id="editDivisi" name="editDivisi">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editSyarat" class="form-label">Syarat</label>
+                        <textarea rows="3" class="form-control" id="editSyarat"
+                            placeholder="1. Warga Negara Indonesia.&#10;2. Jurusan Psikologi dan sejenisnya."
+                            name="syarat"></textarea>
+                        @error('syarat')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="editLokasi" class="form-label">Lokasi</label>
+                        <textarea rows="3" class="form-control" id="editLokasi" placeholder="1. Surabaya&#10;2. Gresik"
+                            name="lokasi"></textarea>
+                        @error('lokasi')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
@@ -149,12 +189,14 @@
 @endsection
 @push('js')
 <script>
-function showDivisi(id) {
-    fetch("divisi/show/" + id)
+function showDivisiFormulir(id) {
+    fetch("formulir/show/" + id)
         .then((response) => response.json())
         .then(data => {
-            document.getElementById('editIdDivisi').value = data.id;
-            document.getElementById('editDivisi').value = data.nama_divisi;
+            document.getElementById('editDivisi').value = data.id;
+            document.getElementById('divisi').innerHTML = data.divisi.nama_divisi;
+            document.getElementById('editSyarat').value = data.syarat;
+            document.getElementById('editLokasi').value = data.lokasi;
         });
 }
 </script>

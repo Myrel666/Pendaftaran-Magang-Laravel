@@ -2,7 +2,7 @@
 
 @section('content')
 <main id="main">
-    <img src="{{ asset('assets/img/1325-scaled 1.png') }}" alt="" class="img-fluid" style="margin-top: 70px;">
+    <img src="{{ asset('assets/img/Durasi.png') }}" alt="" class="img-fluid" width="100%" style="margin-top: 70px;">
 
     <section class="inner-page">
         <div class="container">

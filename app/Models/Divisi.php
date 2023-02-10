@@ -16,4 +16,9 @@ class Divisi extends Model
     {
         return $this->hasOne(Pendaftar::class);
     }
+
+    public function divisi_formulir()
+    {
+        return $this->hasMany(DivisiFormulir::class);
+    }
 }

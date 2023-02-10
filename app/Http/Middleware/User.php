@@ -16,9 +16,12 @@ class User
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!auth()->check() || auth()->user()->role->name != 'user')
-        {
-            abort(403);
+        if(!auth()->check()){
+            return redirect()->route('login');
+        }else if(auth()->check()){
+            if(auth()->user()->role->name != 'user'){
+                abort(403);
+            }
         }
         
         return $next($request);

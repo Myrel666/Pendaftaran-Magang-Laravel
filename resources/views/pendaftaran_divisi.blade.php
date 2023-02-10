@@ -2,7 +2,7 @@
 
 @section('content')
 <main id="main">
-    <img src="{{ asset('assets/img/1325-scaled 1.png') }}" alt="" class="img-fluid" style="margin-top: 70px;">
+    <img src="{{ asset('assets/img/Divisi.png') }}" alt="" class="img-fluid" width="100%" style="margin-top: 70px;">
 
     <section class="inner-page">
         <div class="container">
@@ -12,8 +12,8 @@
                         <div class="col-md">
 
                             <div class="col-md-12 mb-5">
-                                <form action="">
-                                    <input type="text" class="form-control" placeholder="Search...">
+                                <form action="{{ route('guest.cari.divisi', [$user, $durasi]) }}">
+                                    <input type="text" class="form-control" placeholder="Search..." name="search">
                                 </form>
                             </div>
                             @foreach($divisi as $dvs)

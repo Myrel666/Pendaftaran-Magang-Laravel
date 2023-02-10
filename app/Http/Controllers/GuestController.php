@@ -36,7 +36,18 @@ class GuestController extends Controller
      */
     public function divisiPendaftaran($user, $durasi)
     {
-        $divisi = Divisi::orderBy('nama_divisi')->get();
+        $divisi = Divisi::orderBy('nama_divisi')->has('divisi_formulir')->get();
+        return view('pendaftaran_divisi', compact('user', 'durasi', 'divisi'));
+    }
+
+    /**
+     * Cari divisi magang
+     * 
+     */
+    public function cariDivisi(Request $request, $user, $durasi)
+    {
+        $divisi = Divisi::where('nama_divisi', 'like', "%".$request->search."%")->has('divisi_formulir')->get();
+
         return view('pendaftaran_divisi', compact('user', 'durasi', 'divisi'));
     }
 

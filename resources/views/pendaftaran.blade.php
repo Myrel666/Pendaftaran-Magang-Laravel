@@ -12,11 +12,11 @@
             <div id="requitments">
                 <p class="fw-bold">Persyaratan :</p>
                 <ul>
-                    <ol style="white-space: pre-line">{!! $divisi->syarat !!}</ol>
+                    <ol style="white-space: pre-line">{!! $divisi->divisi_formulir[0]->syarat !!}</ol>
                 </ul>
                 <p class="fw-bold">Lokasi :</p>
                 <ul>
-                    <ol style="white-space: pre-line">{!! $divisi->lokasi !!}</ol>
+                    <ol style="white-space: pre-line">{!! $divisi->divisi_formulir[0]->lokasi !!}</ol>
                 </ul>
                 <h3 class="text-capitalize fw-bolder mt-5" style="color: #32B5E9;">masukkan data diri ({{ $user }})</h3>
                 <div class="row mt-5">
@@ -81,7 +81,7 @@
                                     <div class="col-md-3">
                                         <label for="form-check" class="fw-bold">Lokasi:</label>
                                     </div>
-                                    @php $lokasi = explode(PHP_EOL, $divisi->lokasi) @endphp
+                                    @php $lokasi = explode(PHP_EOL, $divisi->divisi_formulir[0]->lokasi) @endphp
                                     <div class="col-md-9 offset-3" style="margin-top: -25px">
                                         @foreach($lokasi as $lok)
                                         @php $noNumber = explode(' ', $lok)[1] @endphp

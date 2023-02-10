@@ -11,6 +11,7 @@ use App\Models\Pendaftar;
 use App\Models\Pengajuan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\DivisiFormulir;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
@@ -40,7 +41,10 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('auth.admin.index');
+        $pemagang = User::where('role_id', 2)->get();
+        $pendaftar = Pendaftar::where('status', '!=', 'diterima')->get();
+        $divisi = Divisi::all();
+        return view('auth.admin.index', compact('pemagang', 'pendaftar', 'divisi'));
     }
 
     /**
@@ -136,6 +140,18 @@ class AdminController extends Controller
     }
 
     /**
+     * Show divisi formulir page
+     * 
+     * @return view
+     */
+    public function divisiFormulir()
+    {   
+        $divisi = DivisiFormulir::all();
+        $listDivisi = Divisi::all();
+        return view('auth.admin.divisiFormulir', compact('divisi', 'listDivisi'));
+    }
+
+    /**
      * Show admin/durasi with condition
      * 
      * @return json
@@ -147,27 +163,67 @@ class AdminController extends Controller
     }
 
     /**
+     * Show admin/durasi with condition
+     * 
+     * @return json
+     */
+    public function showDivisiFormulir($id)
+    {
+        $data = DivisiFormulir::with('divisi')->where('id', $id)->first();
+        return response()->json($data);
+    }
+
+    /**
      * Post divisi 
      * 
      * @return view
      */
     public function addDivisi(Request $request)
     {
+        $divisi_id = null;
+        if($request->has('divisi')){
+            $nama_divisi = $request->divisi;
+            $validation['divisi'] = 'required|unique:divisi,nama_divisi';
+        }else{
+            $validation['editDivisi'] = 'required';
+            $nama_divisi = $request->editDivisi;
+            $divisi_id = Divisi::find($request->editIdDivisi)->id;
+        }
+        
+        $request->validate($validation, $this->validation);
+        Divisi::updateOrCreate([
+            'id' => $divisi_id,
+        ],[
+            'nama_divisi' => $nama_divisi
+        ]);
+
+        return redirect()->back();
+    }
+
+    /**
+     * Post divisi formulir
+     * 
+     * @return view
+     */
+    public function addDivisiFormulir(Request $request)
+    {
+        // dd($request);
         $validation = [
             'syarat' => 'required',
             'lokasi' => 'required'
         ];
         
-        if($request->has('divisi')){
-            $nama_divisi = $request->divisi;
-            $validation['divisi'] = 'required|unique:divisi,nama_divisi';
+        if($request->has('idDivisi')){
+            $id_divisi = $request->idDivisi;
+            $validation['idDivisi'] = 'required|unique:divisi_formulir,divisi_id';
         }else{
-            $nama_divisi = $request->editDivisi;
+            $id_divisi = $request->editDivisi;
         }
         
         $request->validate($validation, $this->validation);
-        Divisi::updateOrCreate([
-            'nama_divisi' => $nama_divisi,
+
+        DivisiFormulir::updateOrCreate([
+            'divisi_id' => $id_divisi,
         ],[
             'syarat' => $request->syarat,
             'lokasi' => $request->lokasi,
@@ -184,6 +240,19 @@ class AdminController extends Controller
     public function deleteDivisi(Divisi $divisi)
     {
         $dvs = Divisi::find($divisi->id);
+        $dvs->delete();
+
+        return redirect()->back();
+    }
+
+    /**
+     * Delete divisi formulir
+     * 
+     * @return view
+     */
+    public function deleteDivisiFormulir(DivisiFormulir $divisi)
+    {
+        $dvs = DivisiFormulir::find($divisi->id);
         $dvs->delete();
 
         return redirect()->back();
@@ -249,20 +318,7 @@ class AdminController extends Controller
             // dd($emailCek->id);
             $data['pendaftar_id'] = $emailCek->id;
             $data['name'] = $emailCek->nama ?? '';
-            $data['password'] = bcrypt('rahasiabro');
-
-            $token = Str::random(64);
-  
-            DB::table('password_resets')->insert([
-              'email' => $request->email, 
-              'token' => $token,
-              'created_at' => now()
-            ]);
-
-            Mail::send('auth.admin.mail.mailPemagangLolos', ['token' => $token], function($message) use($request){
-                $message->to($request->email);
-                $message->subject('Pengumuman Seleksi Wawancara PT. Pelabuhan Indonesia Subregional Jawa');
-            });
+            $data['password'] = bcrypt('rahasiaLOhBRO');
         }else{
             $data['name'] = $request->nama;
         }
@@ -321,6 +377,8 @@ class AdminController extends Controller
                 $status = $request->validasi;
             }
 
+            $pendaftar = Pendaftar::find($id);
+
             if($status == 'lolos berkas'){
                 // Email lolos berkas
                 Mail::send('auth.admin.mail.mailPemagangLolosBerkas',[], function($message) use($request){
@@ -333,9 +391,35 @@ class AdminController extends Controller
                     $message->to($request->email); 
                     $message->subject('Pengumuman Hasil Seleksi Program Magang PT. Pelabuhan Indonesia'); 
                 });
+            }else {
+                $data = [
+                    'email' => $request->email,
+                    'role_id' => 2,
+                    'pendaftar_id' => $pendaftar->id,
+                    'name' => $pendaftar->nama,
+                    'password' => bcrypt('rahasiaLOhBRO')
+                ];
+
+                $cekUserExist = User::where('pendaftar_id', $pendaftar->id)->get();
+                if(empty($cekEmailOnUser)){
+                    User::create($data);
+
+                    $token = Str::random(64);
+    
+                    DB::table('password_resets')->insert([
+                    'email' => $request->email, 
+                    'token' => $token,
+                    'created_at' => now()
+                    ]);
+
+                    Mail::send('auth.admin.mail.mailPemagangLolos', ['token' => $token], function($message) use($request){
+                        $message->to($request->email);
+                        $message->subject('Pengumuman Seleksi Wawancara PT. Pelabuhan Indonesia Subregional Jawa');
+                    });   
+                }
             }
 
-            $pendaftar = Pendaftar::find($id);
+            
             $pendaftar->status = $status;
             $pendaftar->save();
 

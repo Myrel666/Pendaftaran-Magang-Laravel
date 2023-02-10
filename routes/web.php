@@ -25,6 +25,7 @@ Route::get('/', [GuestController::class, 'index'])->name('guest.index');
 // Pendaftaran
 Route::get('daftar/durasi-magang/{user}', [GuestController::class, 'durasiPendaftaran'])->name('guest.pendaftaran.durasi');
 Route::get('daftar/divisi/{user}/{durasi}', [GuestController::class, 'divisiPendaftaran'])->name('guest.pendaftaran.divisi');
+Route::get('daftar/search/{user}/{durasi}', [GuestController::class, 'cariDivisi'])->name('guest.cari.divisi');
 Route::get('daftar/{divisi}/{user}/{durasi}', [GuestController::class, 'pendaftaran'])->name('guest.pendaftaran');
 Route::post('daftar/formulir', [GuestController::class, 'formulir'])->name('guest.formulir');
 
@@ -54,6 +55,12 @@ Route::get('admin/divisi', [AdminController::class, 'divisi'])->name('admin.divi
 Route::get('admin/divisi/show/{id}', [AdminController::class, 'showDivisi'])->name('admin.divisi.show');
 Route::post('admin/divisi/add', [AdminController::class, 'addDivisi'])->name('admin.divisi.add');
 Route::get('admin/divisi/delete/{divisi}', [AdminController::class, 'deleteDivisi'])->name('admin.divisi.delete');
+
+// Pengaturan Formulir
+Route::get('admin/divisi/formulir', [AdminController::class, 'divisiFormulir'])->name('admin.divisi.formulir');
+Route::post('admin/divisi/formulir/addOrUpdate', [AdminController::class, 'addDivisiFormulir'])->name('admin.divisi.formulir.add');
+Route::get('admin/divisi/formulir/show/{id}', [AdminController::class, 'showDivisiFormulir'])->name('admin.divisi.formulir.show');
+Route::get('admin/divisi/formulir/delete/{divisi}', [AdminController::class, 'deleteDivisiFormulir'])->name('admin.divisi.formulir.delete');
 
 // Pengajuan
 Route::get('admin/pengajuan', [AdminController::class, 'pengajuan'])->name('admin.pengajuan');

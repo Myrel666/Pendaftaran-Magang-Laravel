@@ -16,9 +16,12 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(!auth()->check() || auth()->user()->role->name != 'admin')
-        {
-            abort(403);
+        if(!auth()->check()){
+            return redirect()->route('login');
+        }else if(auth()->check()){
+            if(auth()->user()->role->name != 'admin'){
+                abort(403);
+            }
         }
         return $next($request);
     }

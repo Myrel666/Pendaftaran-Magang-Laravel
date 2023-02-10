@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('divisi', function (Blueprint $table) {
-            $table->string('syarat')->after('nama_divisi');
-            $table->string('lokasi')->after('nama_divisi');
+        Schema::create('divisi_formulir', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('divisi_id')->constrained('divisi')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('syarat');
+            $table->string('lokasi');
+            $table->timestamps();
         });
     }
 
@@ -26,9 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('divisi', function (Blueprint $table) {
-            $table->dropColumn('syarat');
-            $table->dropColumn('lokasi');
-        });
+        Schema::dropIfExists('divisi_formulir');
     }
 };
