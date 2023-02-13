@@ -19,6 +19,6 @@ class Divisi extends Model
 
     public function divisi_formulir()
     {
-        return $this->hasMany(DivisiFormulir::class);
+        return $this->hasMany(Formulir::class);
     }
 }

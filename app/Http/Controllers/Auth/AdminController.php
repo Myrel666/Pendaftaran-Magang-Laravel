@@ -11,7 +11,7 @@ use App\Models\Pendaftar;
 use App\Models\Pengajuan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\DivisiFormulir;
+use App\Models\Formulir;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
@@ -146,7 +146,7 @@ class AdminController extends Controller
      */
     public function divisiFormulir()
     {   
-        $divisi = DivisiFormulir::all();
+        $divisi = Formulir::all();
         $listDivisi = Divisi::all();
         return view('auth.admin.divisiFormulir', compact('divisi', 'listDivisi'));
     }
@@ -169,7 +169,7 @@ class AdminController extends Controller
      */
     public function showDivisiFormulir($id)
     {
-        $data = DivisiFormulir::with('divisi')->where('id', $id)->first();
+        $data = Formulir::with('divisi')->where('id', $id)->first();
         return response()->json($data);
     }
 
@@ -222,7 +222,7 @@ class AdminController extends Controller
         
         $request->validate($validation, $this->validation);
 
-        DivisiFormulir::updateOrCreate([
+        Formulir::updateOrCreate([
             'divisi_id' => $id_divisi,
         ],[
             'syarat' => $request->syarat,
@@ -252,7 +252,7 @@ class AdminController extends Controller
      */
     public function deleteDivisiFormulir(DivisiFormulir $divisi)
     {
-        $dvs = DivisiFormulir::find($divisi->id);
+        $dvs = Formulir::find($divisi->id);
         $dvs->delete();
 
         return redirect()->back();

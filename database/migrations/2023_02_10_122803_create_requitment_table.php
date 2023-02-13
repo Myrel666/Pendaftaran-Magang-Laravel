@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('divisi_formulir', function (Blueprint $table) {
+        Schema::create('formulir', function (Blueprint $table) {
             $table->id();
             $table->foreignId('divisi_id')->constrained('divisi')->onUpdate('cascade')->onDelete('cascade');
             $table->string('syarat');
