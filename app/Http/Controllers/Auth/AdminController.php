@@ -215,7 +215,7 @@ class AdminController extends Controller
         
         if($request->has('idDivisi')){
             $id_divisi = $request->idDivisi;
-            $validation['idDivisi'] = 'required|unique:divisi_formulir,divisi_id';
+            $validation['idDivisi'] = 'required|unique:formulir,divisi_id';
         }else{
             $id_divisi = $request->editDivisi;
         }
@@ -250,7 +250,7 @@ class AdminController extends Controller
      * 
      * @return view
      */
-    public function deleteDivisiFormulir(DivisiFormulir $divisi)
+    public function deleteDivisiFormulir(Formulir $divisi)
     {
         $dvs = Formulir::find($divisi->id);
         $dvs->delete();

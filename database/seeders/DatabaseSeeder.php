@@ -14,12 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Role::create([
-            'name' => 'admin'
-        ]);
-        \App\Models\Role::create([
-            'name' => 'user'
-        ]);
+        // \App\Models\Role::create([
+        //     'name' => 'admin'
+        // ]);
+        // \App\Models\Role::create([
+        //     'name' => 'user'
+        // ]);
 
         \DB::table('lokasi')->insert([
             ['name' => 'Surabaya'],
@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Semarang'],
             ['name' => 'Tegal']
         ]);
-        \App\Models\User::factory(1)->create();
+        \App\Models\User::factory(3)->create();
 
     }
 }

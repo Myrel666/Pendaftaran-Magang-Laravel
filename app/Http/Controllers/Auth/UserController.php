@@ -119,10 +119,6 @@ class UserController extends Controller
         $fileName = time() . '_absensi.png';
         $public_path = 'uploads/absensi/'.$fileName;
 
-        $data = [
-            'user_id' => auth()->user()->id,
-        ];
-
         if($request->absen == 'pulang'){
             $data['bukti_pulang'] = $fileName;
             $data['updated_at'] = now();
@@ -142,8 +138,10 @@ class UserController extends Controller
 
         if(file_put_contents($public_path, $image_base64)){
             Presensi::updateOrCreate([
-                'tgl' => Carbon::now()->format('Y-m-d')
-            ],$data);
+                'tgl' => Carbon::now()->format('Y-m-d'),
+                'user_id' => auth()->user()->id
+            ], $data);
+
             return redirect()->back();
         }else{
             echo "Unable to save the file.";
