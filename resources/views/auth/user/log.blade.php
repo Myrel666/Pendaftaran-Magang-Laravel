@@ -110,33 +110,42 @@
 
                                                 @if(isset($dataPresensi[$tgl]))
                                                 @php
+
                                                 $masuk = $dataPresensi[$tgl]->created_at == null ? '00:00:00' :
-                                                date('H:s:i',strtotime($dataPresensi[$tgl]->created_at));
+                                                date('H:i:s',strtotime($dataPresensi[$tgl]->created_at));
+
                                                 $pulang = $dataPresensi[$tgl]->created_at == null ? '00:00:00' :
                                                 date('H:i:s',strtotime($dataPresensi[$tgl]->updated_at));
-                                                if($pulang >= '17:00:00' && $masuk <= '08:00:00' ){ $status='Hadir' ;
-                                                    }elseif($pulang>= '17:00:00' && $masuk > '08:00:00'){
+                                                
+                                                if($pulang >= '17:00:00' && $masuk <= '08:00:00' ){ 
+                                                    $status= 'Hadir';
+                                                }else if(($dataPresensi[$tgl]->bukti_pulang != null && $dataPresensi[$tgl]->bukti_masuk != null) && ($pulang >= '17:00:00' || $masuk > '08:00:00')){
                                                     $status = 'Hadir Terlambat';
-                                                    }elseif($dataPresensi[$tgl]->bukti_pulang == null){
+                                                }else if($dataPresensi[$tgl]->bukti_pulang == null){
                                                     $status = 'Hadir Tanpa Absen Pulang';
-                                                    }elseif($dataPresensi[$tgl]->bukti_masuk == null){
+                                                }else if($dataPresensi[$tgl]->bukti_masuk == null){
                                                     $status = 'Hadir Tanpa Absen Masuk';
-                                                    }elseif($pulang < '17:00:00' && $masuk <='08:00:00' ){
-                                                        $status='Hadir Pulang Cepat' ; } @endphp
-                                                        @elseif(isset($dataPengajuan[$tgl])) @php
-                                                        if($dataPengajuan[$tgl]->
+                                                }else if($pulang < '17:00:00' && $masuk <='08:00:00' ){
+                                                    $status='Hadir Pulang Cepat' ; 
+                                                }
+                                                
+                                                @endphp
+
+                                                
+                                                @elseif(isset($dataPengajuan[$tgl])) 
+                                                @php
+                                                    if($dataPengajuan[$tgl]->
                                                         status == 'disetujui'){
                                                         $status = $dataPengajuan[$tgl]->alasan == 'sakit' ? "SDK (Sakit
                                                         Dengan
                                                         Keterangan)" : "IDK (Izin Dengan Keterangan)";
-                                                        }else{
+                                                    }else{
                                                         $status = 'A';
-                                                        }
-                                                        @endphp
-                                                        @else
-                                                        @php $status = 'A' @endphp
-                                                        @endif
-
+                                                    }
+                                                @endphp
+                                                @else
+                                                    @php $status = 'A'; @endphp
+                                                @endif
 
                                                         {{ $status }}
                                             </td>
